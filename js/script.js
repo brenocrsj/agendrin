@@ -8,13 +8,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (hamburgerBtn && mainNav && navList) {
         hamburgerBtn.addEventListener('click', function() {
             mainNav.classList.toggle('active');
-            hamburgerBtn.classList.toggle('active'); // Para animação do ícone
+            hamburgerBtn.classList.toggle('active'); // Para animação do ícone (X)
         });
 
         // Fechar menu ao clicar em um item (apenas para mobile)
         navList.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
-                // Ajuste este breakpoint para corresponder ao seu CSS @media (max-width: ...)
+                // Usa o mesmo breakpoint do CSS para consistência (767px ou 768px)
                 if (window.innerWidth <= 768) {
                     mainNav.classList.remove('active');
                     hamburgerBtn.classList.remove('active');
@@ -99,12 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return; // Interrompe a função se o e-mail for inválido
             }
 
-            // Se a validação passar, você pode:
-            // 1. Enviar os dados via AJAX para um backend (PHP, Node.js, etc.) para processamento no servidor.
-            //    Ex: fetch('/api/send-email', { method: 'POST', body: JSON.stringify({ name, email, message }), headers: { 'Content-Type': 'application/json' }})
-            // 2. Usar um serviço de formulário de terceiros (Formspree, Netlify Forms, etc.) configurando o 'action' do formulário.
-            // 3. Para fins de demonstração ou prototipagem, podemos simplesmente exibir uma mensagem de sucesso:
-
+            // Para fins de demonstração ou prototipagem, podemos simplesmente exibir uma mensagem de sucesso:
             alert('Mensagem enviada com sucesso! Em breve entraremos em contato.');
             contactForm.reset(); // Limpa o formulário após o "envio"
         });
