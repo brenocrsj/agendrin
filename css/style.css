@@ -38,7 +38,7 @@ html {
 body {
     font-family: var(--font-body);
     line-height: 1.6em;
-    color: var(--color-text-secondary); /* Texto secundário para o corpo padrão */
+    color: var(--color-text-secondary);
     background-color: var(--color-background-light);
     overflow-x: hidden; /* Evita rolagem horizontal em excesso */
 }
@@ -76,13 +76,41 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Título Principal (Hero) */
 h1 {
-    font-size: 4.5em; /* AINDA MAIOR para impacto */
+    font-size: 4.5em;
     font-weight: 700;
     text-align: left;
     color: var(--color-text-on-dark);
     line-height: 1.1;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.5); /* Sombra mais forte */
-    letter-spacing: 1px; /* Mais espaçamento para título */
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    letter-spacing: 1px;
+    margin-bottom: 0; /* Removido para usar a margem específica de .main-title */
+}
+
+/* Estilo para o título principal no Hero (com TOP CAR colorido) */
+.main-title {
+    font-size: 4.5em;
+    font-weight: 700;
+    text-align: left;
+    color: var(--color-text-on-dark);
+    line-height: 1.1;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    letter-spacing: 1px;
+    margin-bottom: 15px; /* Espaçamento abaixo do título */
+}
+
+/* Estilo para a palavra "TOP" */
+.main-title .top-word {
+    color: var(--color-highlight-red);
+    display: inline-block;
+    transform: skewX(-5deg);
+    margin-right: 5px;
+}
+
+/* Estilo para a palavra "CAR" */
+.main-title .car-word {
+    color: var(--color-highlight-yellow);
+    display: inline-block;
+    transform: skewX(-5deg);
 }
 
 /* Títulos de Seção Principal (ex: Nossos Serviços, Sobre Nós) */
@@ -108,7 +136,7 @@ h2::after {
 
 /* Subtítulos de Seção ou Títulos Internos (ex: O QUE FAZEMOS?) */
 h3 {
-    font-family: var(--font-body); /* Poppins */
+    font-family: var(--font-body);
     font-size: 1.8em;
     font-weight: 600;
     text-align: center;
@@ -151,7 +179,7 @@ h3::after { content: none; }
     margin: 0 auto 50px auto;
     color: var(--color-text-secondary);
     padding: 0 10%;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
 /* Títulos "O QUE FAZEMOS?" e "Conheça nossos serviços" */
@@ -286,6 +314,24 @@ h3::after { content: none; }
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(0,0,0,0.25);
 }
+
+/* Estilo para o botão "Agende seu Serviço" */
+.schedule-service-btn {
+    background-image: linear-gradient(152deg, var(--color-highlight-red) 0%, var(--color-highlight-orange) 100%);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    padding: 18px 40px;
+    font-size: 1.05em;
+    font-weight: 700;
+    border: none;
+    transition: all 0.4s ease-in-out;
+}
+
+.schedule-service-btn:hover {
+    background-image: linear-gradient(152deg, var(--color-highlight-orange) 0%, var(--color-highlight-yellow) 100%);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
 
 /* ================================== */
 /* HEADER E NAVEGAÇÃO                */
@@ -423,6 +469,17 @@ h3::after { content: none; }
     margin-bottom: 35px; /* Ajuste */
     color: var(--color-text-on-dark);
     line-height: 1.6; /* Aumenta line-height para legibilidade */
+}
+
+/* Estilo para o slogan "Oficina Mecânica..." */
+.slogan {
+    font-family: var(--font-body);
+    font-size: 1.25em; /* Ajuste para mais legibilidade */
+    font-weight: 300;
+    margin-bottom: 35px; /* Ajuste */
+    color: var(--color-text-on-dark);
+    line-height: 1.6;
+    text-align: left; /* Alinhado à esquerda como o título */
 }
 
 /* ================================== */
@@ -657,20 +714,20 @@ h3::after { content: none; }
     background-color: var(--color-background-mid);
     color: var(--color-text-primary);
     padding: 70px 0;
-    position: relative; /* Para o separador diagonal */
+    position: relative;
     overflow: hidden;
 }
 /* Separador diagonal abaixo da seção de serviços */
 .services-section::after {
     content: '';
     position: absolute;
-    bottom: -1px; /* Ajusta para sentar na borda inferior */
+    bottom: -1px;
     left: 0;
     width: 100%;
-    height: 120px; /* Altura da faixa diagonal */
+    height: 120px;
     background-color: var(--color-background-dark); /* Cor do fundo da próxima seção (galeria) */
-    transform: skewY(-2deg); /* Inclinação leve */
-    transform-origin: bottom right; /* Ponto de origem da inclinação */
+    transform: skewY(-2deg);
+    transform-origin: bottom right;
     z-index: 10;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
@@ -739,10 +796,10 @@ h3::after { content: none; }
 /* SEÇÃO GALERIA (NOVA)              */
 /* ================================== */
 .gallery-section {
-    background-color: var(--color-background-dark); /* Fundo escuro para a galeria */
+    background-color: var(--color-background-dark);
     padding: 70px 0;
     position: relative;
-    z-index: 5; /* Garante que ela fique abaixo do separador da seção anterior */
+    z-index: 5;
 }
 .gallery-section::before {
     content: '';
@@ -763,10 +820,10 @@ h3::after { content: none; }
     text-align: center;
 }
 .gallery-section h2, .gallery-section h3 {
-    color: var(--color-text-on-dark); /* Títulos em branco */
+    color: var(--color-text-on-dark);
 }
 .gallery-section h2::after {
-    background: linear-gradient(to right, var(--color-highlight-yellow), var(--color-highlight-orange)); /* Linha amarela/laranja */
+    background: linear-gradient(to right, var(--color-highlight-yellow), var(--color-highlight-orange));
 }
 
 .gallery-grid {
@@ -785,28 +842,25 @@ h3::after { content: none; }
 }
 .gallery-item img {
     width: 100%;
-    height: 220px; /* Altura fixa ajustada */
+    height: 220px;
     object-fit: cover;
     display: block;
     transition: transform 0.3s ease-in-out;
 }
 .gallery-item:hover img {
-    transform: scale(1.08); /* Zoom sutil */
+    transform: scale(1.08);
 }
-.gallery-item::after { /* Overlay escuro no hover */
+.gallery-item::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(var(--color-highlight-red-rgb),0.5); /* Overlay com cor de destaque */
+    background-color: rgba(192,0,0,0.5); /* Usando RGBA direta do --color-highlight-red */
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
 }
-/* Para usar var(--color-highlight-red-rgb) em rgba, você precisaria definir as variáveis RGB separadamente.
-   Por exemplo: --color-highlight-red-rgb: 192,0,0;
-   Vou usar um valor direto para evitar adicionar mais complexidade às variáveis por enquanto. */
 .gallery-item:hover::after {
     opacity: 1;
 }
@@ -823,7 +877,7 @@ h3::after { content: none; }
 /* SEÇÃO SOBRE NÓS                   */
 /* ================================== */
 .about-section {
-    background-color: var(--color-background-dark); /* Fundo escuro */
+    background-color: var(--color-background-dark);
     position: relative;
     padding: 70px 0;
     color: var(--color-text-on-dark);
