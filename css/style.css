@@ -167,7 +167,7 @@ a:hover {
 
 /* Hamburger Menu (Mobile) */
 .hamburger-menu {
-    display: none;
+    display: none; /* Escondido por padrão no desktop */
     background: none;
     border: none;
     cursor: pointer;
@@ -185,6 +185,17 @@ a:hover {
     transition: all 0.3s ease;
 }
 
+/* Estilos para o menu hamburger ativo (X animado) */
+.hamburger-menu.active .bar:nth-child(1) {
+    transform: translateY(10px) rotate(45deg); /* Desloca e gira a primeira barra */
+}
+.hamburger-menu.active .bar:nth-child(2) {
+    opacity: 0; /* Esconde a barra do meio */
+}
+.hamburger-menu.active .bar:nth-child(3) {
+    transform: translateY(-10px) rotate(-45deg); /* Desloca e gira a terceira barra */
+}
+
 /* Hero Section */
 .hero-section {
     position: relative;
@@ -194,7 +205,7 @@ a:hover {
     justify-content: center;
     text-align: center;
     color: var(--color-text-on-dark);
-    background: url('../img/hero-background.jpg') no-repeat center center/cover;
+    background: url('../img/hero-background.png') no-repeat center center/cover;
     background-attachment: fixed;
     border-bottom: 5px solid var(--color-highlight-orange); /* Borda de destaque */
 }
@@ -429,7 +440,7 @@ a:hover {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    border: 2px solid transparent;
+    border: 2px solid transparent; /* Borda transparente inicial */
 }
 
 .service-card:hover {
@@ -543,7 +554,7 @@ a:hover {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-    border: 2px solid var(--color-highlight-red); /* Borda de destaque */
+    border: 2px solid var(--color-highlight-red);
 }
 
 .contact-info p {
@@ -575,7 +586,7 @@ a:hover {
 
 .social-links a {
     font-size: 2.2em;
-    color: var(--color-dark-text); /* Ícones escuros */
+    color: var(--color-dark-text);
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
@@ -587,11 +598,11 @@ a:hover {
 .contact-form-wrapper {
     flex: 1;
     min-width: 350px;
-    background-color: var(--color-background-mid); /* Fundo cinza médio */
+    background-color: var(--color-background-mid);
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-    border: 2px solid var(--color-highlight-orange); /* Borda de destaque */
+    border: 2px solid var(--color-highlight-orange);
 }
 
 .contact-form h3 {
@@ -617,11 +628,11 @@ a:hover {
 .form-group textarea {
     width: 100%;
     padding: 12px;
-    border: 1px solid var(--color-gray-outline); /* Borda cinza */
+    border: 1px solid var(--color-gray-outline);
     border-radius: 5px;
     font-size: 1em;
     font-family: var(--font-body);
-    background-color: var(--color-background-light); /* Fundo do input claro */
+    background-color: var(--color-background-light);
     color: var(--color-dark-text);
 }
 
@@ -645,7 +656,7 @@ a:hover {
 
 /* Footer */
 .main-footer {
-    background-color: var(--color-dark-text); /* Fundo escuro */
+    background-color: var(--color-dark-text); /* Fundo escuro do footer */
     color: var(--color-text-on-dark);
     padding: 40px 0;
     text-align: center;
@@ -705,7 +716,9 @@ a:hover {
 .solution-cards-grid .solution-card:nth-child(5).animate-on-scroll { transition-delay: 0.4s; }
 
 
-/* Media Queries para Responsividade (adaptadas ao novo estilo) */
+/* ============================ */
+/* Media Queries para Responsividade */
+/* ============================ */
 
 /* Telas menores que 768px (Tablets e Mobiles) */
 @media (max-width: 768px) {
@@ -722,22 +735,60 @@ a:hover {
     }
 
     /* Header */
+    .header-content {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     .main-header .logo img {
         height: 60px;
     }
 
     .main-nav .nav-list {
-        top: 100px;
+        display: none; /* Esconde o menu de navegação por padrão */
+        flex-direction: column;
+        position: absolute;
+        top: 100px; /* Abaixo do header */
+        left: 0;
+        width: 100%;
         background-color: var(--color-background-light); /* Fundo claro para menu mobile */
         box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+        padding: 20px 0;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .main-nav.active .nav-list {
+        display: flex; /* Mostra o menu quando ativo */
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .main-nav .nav-list li {
+        margin: 15px 0;
     }
 
     .main-nav .nav-list a {
         color: var(--color-dark-text); /* Links escuros no menu mobile claro */
+        font-size: 1.1em;
     }
 
-    .hamburger-menu .bar {
-        background-color: var(--color-dark-text); /* Barras escuras */
+    .hamburger-menu {
+        display: block; /* Mostra o hamburger em telas menores */
+    }
+
+    /* Animação do hamburger (X animado) */
+    .hamburger-menu.active .bar:nth-child(1) {
+        transform: translateY(10px) rotate(45deg);
+    }
+    .hamburger-menu.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    .hamburger-menu.active .bar:nth-child(3) {
+        transform: translateY(-10px) rotate(-45deg);
     }
 
     /* Hero Section */
