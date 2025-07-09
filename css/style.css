@@ -17,12 +17,10 @@
     --color-highlight-orange: #FFA500;   /* Laranja vibrante */
     --color-highlight-yellow: #FFD700;   /* Amarelo ouro */
 
-    /* NOVAS VARIÁVEIS PARA COMPONENTES RGB (para uso em rgba()) */
+    /* NOVAS VARIÁVEIS PARA COMPONENTES RGB (para uso em rgba()) - CORRIGIDO */
     --color-highlight-red-rgb: 192, 0, 0;     /* RGB de #C00000 */
     --color-highlight-orange-rgb: 255, 165, 0; /* RGB de #FFA500 */
     --color-highlight-yellow-rgb: 255, 215, 0; /* RGB de #FFD700 */
-    --color-background-light-rgb: 249, 249, 249; /* RGB de #F9F9F9 (para overlay) */
-
 
     /* Fontes */
     --font-heading: 'Oswald', sans-serif;
@@ -48,12 +46,6 @@ body {
     color: var(--color-text-secondary); /* Texto secundário para o corpo padrão */
     background-color: var(--color-background-light);
     overflow-x: hidden; /* Evita rolagem horizontal em excesso */
-}
-
-/* Classe para bloquear a rolagem do body quando o menu mobile está aberto */
-body.menu-open {
-    overflow: hidden;
-    height: 100vh;
 }
 
 .container {
@@ -169,7 +161,7 @@ h3::after { content: none; }
     color: var(--color-text-primary);
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
-    background-clip: text; /* Vendor prefix fix */
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -202,7 +194,7 @@ h3::after { content: none; }
     font-weight: 800;
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
-    background-clip: text; /* Vendor prefix fix */
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -349,7 +341,7 @@ h3::after { content: none; }
 
 
 /* ================================== */
-/* HEADER E NAVEGAÇÃO (MOBILE-FIRST) */
+/* HEADER E NAVEGAÇÃO                */
 /* ================================== */
 .main-header {
     background-color: var(--color-background-light);
@@ -371,74 +363,59 @@ h3::after { content: none; }
     height: 60px;
 }
 
-/* Estilos da lista de navegação (mobile-first: OCULTA por padrão) */
 .main-nav .nav-list {
     list-style: none;
-    /* Por padrão, o menu mobile está oculto. Ele se torna 'flex' apenas quando '.active' */
-    display: none; 
-    
-    /* Estilos para o overlay mobile (quando .active é adicionado) */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: fixed; /* Fixado para cobrir a tela */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(var(--color-background-light-rgb), 0.98); /* Fundo quase sólido */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    padding-top: 60px; /* Espaço para o header/botão hambúrguer */
-    z-index: 1050; /* Acima do header (1000), abaixo do botão (1100) */
-    opacity: 0; /* Começa invisível */
-    pointer-events: none; /* Não permite cliques quando invisível */
-    visibility: hidden; /* Esconde visualmente */
-    transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out; /* Transição suave */
+    display: flex;
 }
-
-/* Estado ativo do menu mobile (visível) */
-.main-nav.active .nav-list {
-    opacity: 1;
-    pointer-events: auto;
-    visibility: visible;
-    display: flex; /* Torna visível no estado ativo */
-}
-
 
 .main-nav .nav-list li {
-    margin-left: 0; /* Zera margem lateral em mobile */
-    margin: 15px 0; /* Espaçamento entre os itens na lista vertical */
+    margin-left: 35px;
 }
 
 .main-nav .nav-list a {
     font-weight: 500;
     color: var(--color-text-primary);
-    padding: 10px 0; /* Aumenta padding para mobile para serem tocáveis */
+    padding: 6px 0;
     position: relative;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     font-family: var(--font-body);
-    font-size: 1.5em; /* Aumenta o tamanho da fonte para mobile */
+    font-size: 0.9em;
 }
 
-/* Remover a linha de destaque no hover para mobile se preferir um visual mais limpo */
 .main-nav .nav-list a::after {
-    content: none; 
-}
-.main-nav .nav-list a:hover {
-    color: var(--color-highlight-red);
+    height: 2px;
+    background-color: var(--color-highlight-red);
+    transition: width 0.3s ease;
 }
 
-/* Menu Hamburger (Mobile) - VISÍVEL por padrão em mobile, oculto em desktop */
+.main-nav .nav-list a:hover::after {
+    width: 100%;
+}
+
+/* Menu Hamburger (Mobile) */
 .hamburger-menu {
-    display: block; /* VISÍVEL por padrão (mobile-first) */
+    display: none;
     background: none;
     border: none;
     cursor: pointer;
     padding: 8px;
     position: relative;
-    z-index: 1100; /* Garante que o botão fique acima do menu overlay */
+    z-index: 1100;
 }
+
+.hamburger-menu .bar {
+    display: block;
+    width: 28px;
+    height: 3px;
+    background-color: var(--color-text-primary);
+    margin: 5px 0;
+    transition: all 0.3s ease;
+}
+
+.hamburger-menu.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.hamburger-menu.active .bar:nth-child(2) { opacity: 0; }
+.hamburger-menu.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
 /* ================================== */
 /* SEÇÃO HERO                        */
@@ -476,7 +453,7 @@ h3::after { content: none; }
     left: 0;
     width: 100%;
     height: 120px;
-    background-color: var(--color-background-light);
+    background-color: var(--color-background-light); /* Cor do fundo da próxima seção */
     transform: skewY(-2deg);
     transform-origin: bottom right;
     z-index: 10;
@@ -499,7 +476,6 @@ h3::after { content: none; }
     margin-bottom: 35px;
     color: var(--color-text-on-dark);
     line-height: 1.6;
-    text-align: left;
 }
 
 /* Estilo para o slogan "Oficina Mecânica..." */
@@ -549,7 +525,7 @@ h3::after { content: none; }
     color: var(--color-text-primary);
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
-    background-clip: text;
+    background-clip: text; /* Vendor prefix fix */
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -585,8 +561,8 @@ h3::after { content: none; }
 }
 
 .solution-card {
-    background-color: var(--color-background-dark);
-    color: var(--color-text-on-dark);
+    background-color: var(--color-background-dark); /* Fundo escuro para os cards normais */
+    color: var(--color-text-on-dark); /* Texto claro para os cards normais */
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -619,7 +595,7 @@ h3::after { content: none; }
     color: var(--color-text-primary);
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
-    background-clip: text;
+    background-clip: text; /* Vendor prefix fix */
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -754,14 +730,14 @@ h3::after { content: none; }
 .services-section::after {
     content: '';
     position: absolute;
-    bottom: -60px;
+    bottom: -60px; /* Ajuste para que 60px fiquem para fora da seção */
     left: 0;
     width: 100%;
-    height: 120px;
-    background-color: var(--color-background-dark);
+    height: 120px; /* Altura da faixa diagonal */
+    background-color: var(--color-background-dark); /* Cor do fundo da próxima seção (galeria) */
     transform: skewY(-2deg);
     transform-origin: bottom right;
-    z-index: 2;
+    z-index: 2; /* Z-index menor para ficar abaixo do conteúdo da próxima seção */
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
@@ -830,11 +806,11 @@ h3::after { content: none; }
 /* ================================== */
 .gallery-section {
     background-color: var(--color-background-dark);
-    padding-top: 130px;
-    padding-bottom: 70px;
+    padding-top: 130px; /* Original 70px + 60px para compensar o skew negativo */
+    padding-bottom: 70px; /* Padding bottom padrão */
     position: relative;
-    z-index: 1;
-    margin-top: -60px;
+    z-index: 1; /* Z-index normal para a seção, estará abaixo do ::after da anterior */
+    margin-top: -60px; /* Puxa a seção para cima para o overlap visual com o ::after */
 }
 .gallery-section::before {
     content: '';
@@ -1035,97 +1011,6 @@ h3::after { content: none; }
     color: var(--color-text-secondary);
     line-height: 1.4;
 }
-
-/* ================================== */
-/* SEÇÃO RECOMENDAÇÕES                */
-/* ================================== */
-.recommendations-section {
-    background-color: var(--color-background-light);
-    padding: 70px 0;
-    text-align: center;
-    position: relative;
-    z-index: 5;
-}
-
-.recommendations-section h2 {
-    color: var(--color-text-primary);
-}
-.recommendations-section h3 {
-    font-size: 1.5em;
-    color: var(--color-text-secondary);
-    margin-bottom: 50px;
-}
-
-.reviews-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-bottom: 50px;
-}
-
-.review-card {
-    background-color: var(--color-background-light);
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    text-align: left;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    border: 1px solid var(--color-background-mid);
-}
-
-.review-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
-    border-color: var(--color-highlight-red);
-}
-
-.review-header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 15px;
-}
-
-/* .reviewer-info não é mais um div separado no HTML, os elementos estão diretamente em .review-header */
-
-.reviewer-name {
-    font-weight: 600;
-    color: var(--color-text-primary);
-    font-size: 1.05em;
-    margin-bottom: 3px;
-}
-
-.stars {
-    color: var(--color-highlight-yellow);
-    font-size: 0.95em;
-    margin-bottom: 3px;
-}
-
-.review-date {
-    font-size: 0.8em;
-    color: var(--color-text-secondary);
-    display: block;
-}
-
-.review-text {
-    font-size: 0.9em;
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-    margin-bottom: 15px;
-}
-
-.review-source {
-    font-size: 0.75em;
-    color: var(--color-text-secondary);
-    font-style: italic;
-    text-align: right;
-    display: block;
-}
-
-.reviews-cta {
-    margin-top: 50px;
-}
-
 
 /* ================================== */
 /* SEÇÃO CONTATO                     */
@@ -1339,7 +1224,7 @@ h3::after { content: none; }
 /* Efeito cascata para cards */
 .services-grid .service-card.animate-on-scroll { transition-delay: 0s; }
 .services-grid .service-card:nth-child(2).animate-on-scroll { transition-delay: 0.1s; }
-.services-grid .service-card:nth-child(3).animate-on-scroll { transition-delay: 0.2s; }
+.services-grid .service-card:nth-child(3).pressionando.animate-on-scroll { transition-delay: 0.2s; }
 .services-grid .service-card:nth-child(4).animate-on-scroll { transition-delay: 0.3s; }
 .services-grid .service-card:nth-child(5).animate-on-scroll { transition-delay: 0.4s; }
 .services-grid .service-card:nth-child(6).animate-on-scroll { transition-delay: 0.5s; }
@@ -1355,117 +1240,71 @@ h3::after { content: none; }
 /* MEDIA QUERIES (RESPONSIVIDADE)    */
 /* ================================== */
 
-/* Telas maiores que 767px (Desktop e Tablets maiores) */
-@media (min-width: 768px) {
-    /* Exibir menu normal */
-    .main-nav .nav-list {
-        display: flex !important; /* Força a exibição como flex no desktop */
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        visibility: visible !important;
-        
-        /* Reset de posições mobile-only */
-        position: static;
-        height: auto;
-        width: auto;
-        background-color: transparent;
-        box-shadow: none;
-        padding-top: 0;
-        z-index: auto;
-    }
-    .main-nav .nav-list li {
-        margin-left: 35px; /* Margem lateral para desktop */
-        margin: 0; /* Remove margem vertical mobile */
-    }
-    .main-nav .nav-list a {
-        font-size: 0.9em;
-        padding: 6px 0;
-    }
-    .main-nav .nav-list a::after {
-        content: ''; /* Garante a linha de destaque no hover */
-    }
-
-    /* Ocultar hambúrguer */
-    .hamburger-menu {
-        display: none !important; /* Força a ocultação do hambúrguer no desktop */
-    }
-
-    /* Outros ajustes para desktop/tablet grande */
-    .section-padding { padding: 80px 0; }
-    
-    h1 { font-size: 3.8em; }
-    h2 { font-size: 3.2em; }
-    h3 { font-size: 1.8em; }
-
-    .main-header .logo img { height: 60px; }
-
-    .hero-content {
-        margin-left: 10%;
-        max-width: 550px;
-    }
-    .hero-content p { font-size: 1.25em; }
-
-    .solutions-title { font-size: 3.5em; }
-    .solutions-subtitle { font-size: 1.8em; }
-    .solutions-description { padding: 0 10%; }
-
-    .solution-cards-grid { gap: 20px; }
-    .solution-card { min-height: 90px; }
-
-    .what-we-do h2 { font-size: 2.8em; }
-    .what-we-do h3 { font-size: 1.8em; }
-    .services-list-detailed li { font-size: 1.05em; }
-    .stat-number { font-size: 3.5em; }
-    .stat-text { font-size: 0.8em; }
-
-    .services-section h2 { font-size: 2.8em; }
-    .services-section h3 { font-size: 1.2em; }
-    .service-card { padding: 20px; margin: 0; }
-    .service-card h3 { font-size: 1.1em; }
-    .service-card .service-icon { font-size: 3em; }
-
-    .about-section h2 { font-size: 2.8em; padding: 0 10%; }
-    .about-section h3 { font-size: 1.2em; }
-    .about-content { font-size: 1.05em; }
-
-    .features-section h2 { font-size: 1.2em; }
-    .features-section h3 { font-size: 2.8em; }
-    .features-grid { gap: 20px; }
-    .feature-item { padding: 25px; margin: 0; }
-    .feature-item h3 { font-size: 1.1em; }
-    .feature-item .feature-icon { font-size: 2.8em; }
-
-    .contact-section h2 { font-size: 1.2em; }
-    .contact-section h3 { font-size: 2.8em; }
-    .contact-info, .contact-form-wrapper { padding: 30px; }
-    .contact-info p { font-size: 1em; }
-    .contact-form h3 { font-size: 1.8em; }
-    .form-group label { font-size: 0.9em; }
-    .form-group input, .form-group textarea { font-size: 0.95em; }
-
-    #backToTopBtn {
-        width: 55px; height: 55px; font-size: 1.6em;
-        bottom: 30px; right: 30px;
+/* Telas menores que 1200px (desktop pequeno/tablet grande) */
+@media (max-width: 1200px) {
+    .container {
+        padding: 0 15px;
     }
 }
 
-/* Telas menores que 1024px (Tablets) - Ajuste Fino para espaçamento horizontal */
-@media (max-width: 1024px) and (min-width: 768px) {
-    .main-nav .nav-list li {
-        margin-left: 20px;
-    }
-    .main-nav .nav-list a {
-        font-size: 0.85em;
-    }
+/* Telas menores que 1024px (Tablets) */
+@media (max-width: 1024px) {
+    .section-padding { padding: 60px 0; }
+    
+    h1 { font-size: 3.2em; }
+    h2 { font-size: 2.5em; }
+    h3 { font-size: 1.6em; }
 
-    /* Reduzindo padding horizontal de conteúdo para tablets */
-    .hero-content, .solutions-description, .about-section h2, .about-content, .features-grid, .contact-info-form-wrapper {
-        padding-left: 15px;
-        padding-right: 15px;
+    .main-header .logo img { height: 55px; }
+    .main-nav .nav-list li { margin-left: 25px; }
+
+    .hero-content {
+        margin-left: 5%;
+        max-width: 450px;
     }
-    .services-grid {
-        padding-left: 15px;
-        padding-right: 15px;
+    .hero-content p { font-size: 1.1em; }
+
+    .solutions-title { font-size: 2.5em; }
+    .solutions-subtitle { font-size: 1.3em; }
+    .solutions-description { padding: 0 5%; }
+
+    .solution-cards-grid { gap: 15px; }
+    .solution-card { min-height: 80px; }
+
+    .what-we-do h2 { font-size: 2.2em; }
+    .what-we-do h3 { font-size: 1.5em; }
+    .services-list-detailed li { font-size: 0.95em; }
+    .stat-number { font-size: 3em; }
+    .stat-text { font-size: 0.75em; }
+
+    .services-section h2 { font-size: 2.2em; }
+    .services-section h3 { font-size: 1.1em; }
+    .service-card { padding: 15px; margin: 5px; }
+    .service-card h3 { font-size: 1em; }
+    .service-card .service-icon { font-size: 2.5em; }
+
+    .about-section h2 { font-size: 2.2em; padding: 0 5%; }
+    .about-section h3 { font-size: 1.1em; }
+    .about-content { font-size: 1em; }
+
+    .features-section h2 { font-size: 1.1em; }
+    .features-section h3 { font-size: 2.2em; }
+    .features-grid { gap: 15px; }
+    .feature-item { padding: 20px; margin: 5px; }
+    .feature-item h3 { font-size: 1em; }
+    .feature-item .feature-icon { font-size: 2.5em; }
+
+    .contact-section h2 { font-size: 1.1em; }
+    .contact-section h3 { font-size: 2.2em; }
+    .contact-info, .contact-form-wrapper { padding: 25px; }
+    .contact-info p { font-size: 0.95em; }
+    .contact-form h3 { font-size: 1.6em; }
+    .form-group label { font-size: 0.85em; }
+    .form-group input, .form-group textarea { font-size: 0.9em; }
+
+    #backToTopBtn {
+        width: 50px; height: 50px; font-size: 1.5em;
+        bottom: 25px; right: 25px;
     }
 }
 
@@ -1481,54 +1320,12 @@ h3::after { content: none; }
     h3 { font-size: 1.4em; }
 
     .main-header .logo img { height: 45px; }
-    /* Mobile menu (nav-list) é oculto por padrão no CSS global, e o hambúrguer é exibido */
-    
     .main-nav .nav-list {
-        /* Mobile menu overlay */
-        display: none; /* ESCONDIDO por padrão, mas se torna flex quando .active */
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(var(--color-background-light-rgb), 0.98);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        padding-top: 60px;
-        z-index: 1050;
-        opacity: 0;
-        pointer-events: none;
-        visibility: hidden;
-        transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+        top: 75px;
+        padding: 15px 0;
     }
-
-    /* ESTADO ATIVO DO MENU MOBILE: Torna visível e permite interação */
-    .main-nav.active .nav-list {
-        display: flex !important; /* Força a exibição quando ativo */
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        visibility: visible !important;
-    }
-
-    /* Estilo dos itens de navegação dentro do menu mobile */
-    .main-nav .nav-list li {
-        margin: 15px 0;
-    }
-    .main-nav .nav-list a {
-        font-size: 1.5em;
-        padding: 10px 0;
-        color: var(--color-text-primary);
-        letter-spacing: 1px;
-    }
-    .main-nav .nav-list a::after {
-        content: none; 
-    }
-    .main-nav .nav-list a:hover {
-        color: var(--color-highlight-red);
-    }
-
+    .main-nav .nav-list a { font-size: 1em; }
+    .hamburger-menu { display: block; }
 
     /* Hero Section */
     .hero-section {
