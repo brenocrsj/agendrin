@@ -12,29 +12,29 @@
     <link rel="icon" href="img/top-car-logo.png" type="image/png">
 </head>
 <body>
-    <header class="main-header">
-        <div class="container header-content">
-            <a href="#hero" class="logo">
-                <img src="img/top-car-logo.png" alt="Logo Top Car">
-            </a>
-            <nav class="main-nav">
-                <button class="hamburger-menu" aria-label="Abrir Menu">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </button>
-                <ul class="nav-list">
-                    <li><a href="#hero">Início</a></li>
-                    <li><a href="#solutions">Soluções</a></li>
-                    <li><a href="#services">Serviços</a></li>
-                    <li><a href="#gallery">Galeria</a></li>
-                    <li><a href="#recommendations">Recomendações</a></li>
-                    <li><a href="#about">Sobre Nós</a></li>
-                    <li><a href="#contact">Contato</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+<header class="main-header">
+    <div class="container header-content">
+        <a href="#hero" class="logo">
+            <img src="img/top-car-logo.png" alt="Logo Top Car">
+        </a>
+        <button class="hamburger-menu" aria-label="Abrir Menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li><a href="#hero">Início</a></li>
+                <li><a href="#solutions">Soluções</a></li>
+                <li><a href="#services">Serviços</a></li>
+                <li><a href="#gallery">Galeria</a></li>
+                <li><a href="#recommendations">Recomendações</a></li>
+                <li><a href="#about">Sobre Nós</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
 
     <main>
         <section id="hero" class="hero-section">
@@ -172,7 +172,7 @@
                     </div>
                 </div>
                 <div class="gallery-cta">
-                    <a href="#" class="btn btn-primary">Ver Mais Fotos</a>
+                    <a href="https://www.instagram.com/oficinatopcar._/?hl=pt-br" target="_blank" class="btn btn-primary">Ver Mais Fotos</a>
                 </div>
             </div>
         </section>
@@ -276,44 +276,44 @@
             <div class="container">
                 <h2>Fale Conosco</h2>
                 <h3>Estamos prontos para atender você!</h3>
-                <div class="contact-info-form-wrapper">
-                    <div class="contact-info">
-                        <p><i class="fas fa-map-marker-alt"></i> Rua: Vicente Onilis Sagrada Família Nº: 50 Galpão 04</p>
-                        <p>Barão de Cocais, MG - 35970-000</p>
-                        <p><i class="fas fa-mobile-alt"></i> <a href="tel:+5531993051909">(31) 99305-1909</a></p>
-                        <p><i class="fas fa-phone-alt"></i> <a href="tel:+5531971657347">(31) 97165-7347</a></p>
-                        <p><i class="fas fa-envelope"></i> <a href="mailto:topcarautocenter5@gmail.com">topcarautocenter5@gmail.com</a></p>
-                        <div class="social-links">
-                            <a href="https://wa.me/5531993051909" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <div class="contact-form-wrapper">
+                    <h3>Envie sua Mensagem</h3>
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Nome:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Empresa (Opcional):</label>
+                            <input type="text" id="company" name="company" placeholder="Nome da sua empresa">
+                        </div>
+                        <div class="form-group service-type-group">
+                            <label>Tipo(s) de Serviço(s) de Interesse:</label>
+                            <div class="checkbox-options">
+                                <label><input type="checkbox" name="serviceType" value="revisao"> Revisão Geral</label>
+                                <label><input type="checkbox" name="serviceType" value="troca-oleo"> Troca de Óleo</label>
+                                <label><input type="checkbox" name="serviceType" value="freios"> Freios e Pastilhas</label>
+                                <label><input type="checkbox" name="serviceType" value="suspensao"> Suspensão</label>
+                                <label><input type="checkbox" name="serviceType" value="diagnostico"> Diagnóstico Eletrônico</label>
+                                <label><input type="checkbox" name="serviceType" value="pneus"> Pneus e Alinhamento</label>
+                                <label><input type="checkbox" name="serviceType" value="outros"> Outros (especificar na mensagem)</label>
                             </div>
-                    </div>
-                    <div class="contact-form-wrapper">
-                        <h3>Envie sua Mensagem</h3>
-                        <form class="contact-form" id="contactForm">
-                            <div class="form-group">
-                                <label for="name">Nome:</label>
-                                <input type="text" id="name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">E-mail:</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="subject">Assunto:</label>
-                                <input type="text" id="subject" name="subject">
-                            </div>
-                            <div class="form-group">
-                                <label for="message">Mensagem:</label>
-                                <textarea id="message" name="message" rows="5" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mensagem:</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="Descreva sua solicitação..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary form-submit-btn">Enviar Mensagem</button>
+                    </form>
                 </div>
-                <div class="google-map">
-                    <iframe src="https://maps.google.com/?cid=9496153236293223078&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ"
-                        width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
+            </div>
+            <div class="google-map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4658.830819955775!2d-43.47738202393433!3d-19.94524048144658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa4372d460451bb%3A0x83c91d0e3def02a6!2sOficina%20Top%20Car!5e1!3m2!1spt-BR!2sbr!4v1752066718970!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </section>
     </main>
@@ -325,6 +325,8 @@
     </footer>
 
     <button id="backToTopBtn" title="Voltar ao Topo"><i class="fas fa-arrow-up"></i></button>
+
+
 
     <script src="js/script.js"></script>
 </body>
