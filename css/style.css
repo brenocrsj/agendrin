@@ -161,7 +161,7 @@ h3::after { content: none; }
     color: var(--color-text-primary);
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
-    background-clip: text;
+    background-clip: text; /* Vendor prefix fix */
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -194,7 +194,7 @@ h3::after { content: none; }
     font-weight: 800;
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
-    background-clip: text;
+    background-clip: text; /* Vendor prefix fix */
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -202,6 +202,7 @@ h3::after { content: none; }
 .what-we-do h2::after { content: none; }
 
 .what-we-do h3 {
+    font-family: var(--font-body);
     font-size: 1.8em;
     font-weight: 500;
     color: var(--color-highlight-orange);
@@ -238,7 +239,7 @@ h3::after { content: none; }
 }
 .about-section h2::after { content: none; }
 
-.about-section h3 { /* Subtítulo da seção About */
+.about-section h3 {
     font-size: 1.2em;
     font-weight: 400;
     letter-spacing: 2px;
@@ -1320,12 +1321,67 @@ h3::after { content: none; }
     h3 { font-size: 1.4em; }
 
     .main-header .logo img { height: 45px; }
-    .main-nav .nav-list {
-        top: 75px;
-        padding: 15px 0;
+    
+    /* Modificação do menu de navegação principal para telas móveis */
+    .main-nav {
+        position: fixed; /* Fixa o menu para cobrir toda a viewport */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh; /* Altura total da viewport */
+        background-color: rgba(0, 0, 0, 0.95); /* Sobreposição escura semi-transparente */
+        display: flex; /* Mantém como flex para centralizar o conteúdo do menu */
+        justify-content: center;
+        align-items: center;
+        transform: translateX(100%); /* Inicia fora da tela (à direita), oculto */
+        transition: transform 0.4s ease-in-out; /* Transição suave de deslizamento */
+        z-index: 998; /* Abaixo do botão hambúrguer, mas acima de outros conteúdos */
+        visibility: hidden; /* Oculta completamente quando inativo para leitores de tela, etc. */
+        pointer-events: none; /* Desabilita interações quando oculto */
     }
-    .main-nav .nav-list a { font-size: 1em; }
-    .hamburger-menu { display: block; }
+
+    .main-nav.active {
+        transform: translateX(0); /* Desliza para a visualização */
+        visibility: visible; /* Torna visível */
+        pointer-events: auto; /* Habilita interações quando ativo */
+    }
+
+    .main-nav .nav-list {
+        flex-direction: column; /* Empilha os itens do menu verticalmente */
+        align-items: center; /* Centraliza os itens horizontalmente */
+        width: 100%; /* Ocupa a largura total do pai (main-nav) */
+        padding: 0; /* Remove padding de estilos de desktop */
+        margin-top: 0; /* Garante que não haja margens indesejadas de regras anteriores */
+    }
+
+    .main-nav .nav-list li {
+        margin: 15px 0; /* Espaçamento vertical para os itens do menu */
+    }
+
+    .main-nav .nav-list a {
+        font-size: 1.8em; /* Tamanho de fonte maior para melhor legibilidade no celular */
+        color: var(--color-text-on-dark); /* Garante visibilidade na sobreposição escura */
+        padding: 10px 0;
+    }
+    
+    /* Garante que o sublinhado ao passar o mouse em desktop não interfira */
+    .main-nav .nav-list a::after {
+        background-color: var(--color-highlight-yellow); /* Muda a cor do sublinhado para consistência */
+        width: 0; /* Começa sem sublinhado */
+    }
+    .main-nav .nav-list a:hover::after {
+        width: 100%; /* Mostra o sublinhado ao passar o mouse */
+    }
+
+    .hamburger-menu {
+        display: block; /* Garante que o hambúrguer esteja visível no celular */
+    }
+
+    /* Garante que o logo não seja coberto pelo main-nav fixo quando ativo */
+    .header-content {
+        position: relative; /* Para garantir que o z-index funcione para os filhos */
+        z-index: 1001; /* Mais alto que o main-nav */
+    }
 
     /* Hero Section */
     .hero-section {
