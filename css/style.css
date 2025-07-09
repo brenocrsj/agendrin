@@ -1,6 +1,6 @@
-/* ================================== */
-/* VARIÁVEIS CSS DE CORES E FONTES    */
-/* ================================== */
+/* ========================================================== */
+/* ========= VARIÁVEIS CSS DE CORES E FONTES ================ */
+/* ========================================================== */
 :root {
     /* Cores de fundo */
     --color-background-light: #F9F9F9;   /* Off-white suave, base principal */
@@ -17,13 +17,18 @@
     --color-highlight-orange: #FFA500;   /* Laranja vibrante */
     --color-highlight-yellow: #FFD700;   /* Amarelo ouro */
 
+    /* NOVAS VARIÁVEIS PARA COMPONENTES RGB (para uso em rgba()) */
+    --color-highlight-red-rgb: 192, 0, 0;     /* RGB de #C00000 */
+    --color-highlight-orange-rgb: 255, 165, 0; /* RGB de #FFA500 */
+    --color-highlight-yellow-rgb: 255, 215, 0; /* RGB de #FFD700 */
+
     /* Fontes */
     --font-heading: 'Oswald', sans-serif;
     --font-body: 'Poppins', sans-serif;
 }
 
 /* ================================== */
-/* RESET E ESTILOS GERAIS            */
+/* ======== RESET E ESTILOS GERAIS == */
 /* ================================== */
 * {
     margin: 0;
@@ -41,6 +46,12 @@ body {
     color: var(--color-text-secondary);
     background-color: var(--color-background-light);
     overflow-x: hidden; /* Evita rolagem horizontal em excesso */
+}
+
+/* Classe para bloquear a rolagem do body quando o menu mobile está aberto */
+body.menu-open {
+    overflow: hidden;
+    height: 100vh; /* Ocupa a altura total do viewport */
 }
 
 .container {
@@ -64,7 +75,7 @@ a:hover {
 }
 
 /* ================================== */
-/* TIPOGRAFIA - HIERARQUIA REFINADA   */
+/* ======== TIPOGRAFIA - HIERARQUIA REFINADA == */
 /* ================================== */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
@@ -74,7 +85,7 @@ h1, h2, h3, h4, h5, h6 {
     letter-spacing: 0.8px;
 }
 
-/* Título Principal (Hero) */
+/* Título Principal (Hero) - General h1 rule (will be overridden by .main-title) */
 h1 {
     font-size: 4.5em;
     font-weight: 700;
@@ -83,7 +94,7 @@ h1 {
     line-height: 1.1;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
     letter-spacing: 1px;
-    margin-bottom: 0; /* Removido para usar a margem específica de .main-title */
+    margin-bottom: 0;
 }
 
 /* Estilo para o título principal no Hero (com TOP CAR colorido) */
@@ -95,7 +106,7 @@ h1 {
     line-height: 1.1;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
     letter-spacing: 1px;
-    margin-bottom: 15px; /* Espaçamento abaixo do título */
+    margin-bottom: 15px;
 }
 
 /* Estilo para a palavra "TOP" */
@@ -136,7 +147,7 @@ h2::after {
 
 /* Subtítulos de Seção ou Títulos Internos (ex: O QUE FAZEMOS?) */
 h3 {
-    font-family: var(--font-body);
+    font-family: var(--font-body); /* Poppins */
     font-size: 1.8em;
     font-weight: 600;
     text-align: center;
@@ -156,6 +167,7 @@ h3::after { content: none; }
     color: var(--color-text-primary);
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
+    background-clip: text; /* Vendor prefix fix */
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -188,6 +200,7 @@ h3::after { content: none; }
     font-weight: 800;
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
+    background-clip: text; /* Vendor prefix fix */
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -415,7 +428,7 @@ h3::after { content: none; }
 /* ================================== */
 .hero-section {
     position: relative;
-    min-height: 580px; /* Aumentando a altura para impacto */
+    min-height: 580px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -423,9 +436,9 @@ h3::after { content: none; }
     color: var(--color-text-on-dark);
     background: url('../img/hero-background.png') no-repeat center center/cover;
     background-attachment: fixed;
-    border-bottom: none; /* Remover a borda inferior padrão */
+    border-bottom: none;
     padding: 7em 0;
-    overflow: hidden; /* Garante que o pseudo-elemento não vaze */
+    overflow: hidden;
 }
 
 .hero-overlay {
@@ -434,7 +447,7 @@ h3::after { content: none; }
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.75); /* Mais escuro para forte contraste com texto */
+    background-color: rgba(0, 0, 0, 0.75);
     z-index: 1;
 }
 
@@ -442,15 +455,15 @@ h3::after { content: none; }
 .hero-section::after {
     content: '';
     position: absolute;
-    bottom: -1px; /* Ajusta para sentar na borda inferior */
+    bottom: -1px;
     left: 0;
     width: 100%;
-    height: 120px; /* Altura da faixa diagonal */
+    height: 120px;
     background-color: var(--color-background-light); /* Cor do fundo da próxima seção */
-    transform: skewY(-2deg); /* Cria o efeito diagonal */
-    transform-origin: bottom right; /* Ponto de origem da inclinação */
-    z-index: 10; /* Garante que ele fique acima de elementos da próxima seção se necessário */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Sombra sutil para profundidade */
+    transform: skewY(-2deg);
+    transform-origin: bottom right;
+    z-index: 10;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 
@@ -458,28 +471,28 @@ h3::after { content: none; }
     position: relative;
     z-index: 2;
     padding: 15px;
-    max-width: 550px; /* Largura um pouco maior */
+    max-width: 550px;
     margin-left: 10%;
 }
 
-.hero-content p {
+.hero-content p { /* Geral para parágrafos no hero content, será sobrescrito por .slogan */
     font-family: var(--font-body);
-    font-size: 1.25em; /* Ajuste para mais legibilidade */
+    font-size: 1.25em;
     font-weight: 300;
-    margin-bottom: 35px; /* Ajuste */
+    margin-bottom: 35px;
     color: var(--color-text-on-dark);
-    line-height: 1.6; /* Aumenta line-height para legibilidade */
+    line-height: 1.6;
 }
 
 /* Estilo para o slogan "Oficina Mecânica..." */
 .slogan {
     font-family: var(--font-body);
-    font-size: 1.25em; /* Ajuste para mais legibilidade */
+    font-size: 1.25em;
     font-weight: 300;
-    margin-bottom: 35px; /* Ajuste */
+    margin-bottom: 35px;
     color: var(--color-text-on-dark);
     line-height: 1.6;
-    text-align: left; /* Alinhado à esquerda como o título */
+    text-align: left;
 }
 
 /* ================================== */
@@ -492,7 +505,7 @@ h3::after { content: none; }
     padding: 70px 0;
     color: var(--color-text-primary);
     background-color: var(--color-background-light);
-    z-index: 5; /* Garante que ela fique abaixo do separador do hero */
+    z-index: 5;
 }
 
 .solutions-section::before {
@@ -518,6 +531,7 @@ h3::after { content: none; }
     color: var(--color-text-primary);
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
+    background-clip: text; /* Vendor prefix fix */
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -587,6 +601,7 @@ h3::after { content: none; }
     color: var(--color-text-primary);
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
+    background-clip: text; /* Vendor prefix fix */
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -721,14 +736,14 @@ h3::after { content: none; }
 .services-section::after {
     content: '';
     position: absolute;
-    bottom: -1px;
+    bottom: -60px; /* Ajuste para que 60px fiquem para fora da seção */
     left: 0;
     width: 100%;
-    height: 120px;
+    height: 120px; /* Altura da faixa diagonal */
     background-color: var(--color-background-dark); /* Cor do fundo da próxima seção (galeria) */
     transform: skewY(-2deg);
     transform-origin: bottom right;
-    z-index: 10;
+    z-index: 2; /* Z-index menor para ficar abaixo do conteúdo da próxima seção */
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
@@ -797,9 +812,11 @@ h3::after { content: none; }
 /* ================================== */
 .gallery-section {
     background-color: var(--color-background-dark);
-    padding: 70px 0;
+    padding-top: 130px; /* Original 70px + 60px para compensar o skew negativo */
+    padding-bottom: 70px;
     position: relative;
-    z-index: 5;
+    z-index: 1; /* Z-index normal para a seção, estará abaixo do ::after da anterior */
+    margin-top: -60px; /* Puxa a seção para cima para o overlap visual com o ::after */
 }
 .gallery-section::before {
     content: '';
@@ -1000,6 +1017,102 @@ h3::after { content: none; }
     color: var(--color-text-secondary);
     line-height: 1.4;
 }
+
+/* ================================== */
+/* SEÇÃO RECOMENDAÇÕES                */
+/* ================================== */
+.recommendations-section {
+    background-color: var(--color-background-light); /* Fundo claro */
+    padding: 70px 0;
+    text-align: center;
+    position: relative; /* Para garantir z-index */
+    z-index: 5; /* Garante que fique acima da section services se houver overlap */
+}
+
+.recommendations-section h2 {
+    color: var(--color-text-primary);
+}
+.recommendations-section h3 {
+    font-size: 1.5em;
+    color: var(--color-text-secondary);
+    margin-bottom: 50px;
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.review-card {
+    background-color: var(--color-background-light); /* Fundo branco/off-white para minimalismo */
+    padding: 25px; /* Padding um pouco reduzido para minimalismo */
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08); /* Sombra bem sutil */
+    text-align: left;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border: 1px solid var(--color-background-mid); /* Borda fina e sutil */
+}
+
+.review-card:hover {
+    transform: translateY(-3px); /* Elevação suave */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.12); /* Sombra um pouco mais forte no hover */
+    border-color: var(--color-highlight-red); /* Borda de destaque no hover */
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.reviewer-photo {
+    width: 50px; /* Tamanho ajustado para minimalismo */
+    height: 50px; /* Tamanho ajustado */
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+    border: 2px solid var(--color-background-mid); /* Borda mais sutil */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Sombra mais suave */
+}
+
+.reviewer-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.reviewer-name {
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-size: 1.05em; /* Ajuste */
+}
+
+.stars {
+    color: var(--color-highlight-yellow);
+    font-size: 0.95em; /* Ajuste */
+}
+
+.review-text {
+    font-size: 0.9em; /* Ajuste */
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.review-source {
+    font-size: 0.75em; /* Ajuste */
+    color: var(--color-text-secondary);
+    font-style: italic;
+    text-align: right;
+    display: block;
+}
+
+.reviews-cta {
+    margin-top: 50px;
+}
+
 
 /* ================================== */
 /* SEÇÃO CONTATO                     */
@@ -1328,7 +1441,18 @@ h3::after { content: none; }
         max-width: 100%;
     }
     .hero-content p { font-size: 0.95em; margin-right: 0; }
+    .slogan {
+        font-size: 1em;
+        text-align: center;
+        margin-bottom: 25px;
+    }
     .btn { font-size: 0.8em; padding: 10px 20px; }
+    .schedule-service-btn {
+        width: 80%;
+        margin: 0 auto;
+        display: block;
+    }
+
 
     /* Soluções Section */
     .solutions-title { font-size: 2em; }
