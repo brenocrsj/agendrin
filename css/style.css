@@ -169,7 +169,7 @@ h3::after { content: none; }
     color: var(--color-text-primary);
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
-    background-clip: text;
+    background-clip: text; /* Vendor prefix fix */
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -202,7 +202,7 @@ h3::after { content: none; }
     font-weight: 800;
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
-    background-clip: text;
+    background-clip: text; /* Vendor prefix fix */
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -374,7 +374,7 @@ h3::after { content: none; }
 /* Estilos da lista de navegação (desktop) */
 .main-nav .nav-list {
     list-style: none;
-    display: flex; /* Visível por padrão no desktop */
+    /* display: flex; REMOVIDO AQUI, AGORA É DEFINIDO APENAS NO MEDIA QUERY */
 }
 
 .main-nav .nav-list li {
@@ -402,9 +402,9 @@ h3::after { content: none; }
     width: 100%;
 }
 
-/* Menu Hamburger (Mobile) - ESCONDIDO por padrão, visível apenas em mobile */
+/* Menu Hamburger (Mobile) - VISÍVEL por padrão, oculto apenas em desktop */
 .hamburger-menu {
-    display: none; /* ESCONDIDO por padrão no desktop */
+    display: block; /* VISÍVEL por padrão (mobile-first) */
     background: none;
     border: none;
     cursor: pointer;
