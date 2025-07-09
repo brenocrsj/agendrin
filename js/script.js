@@ -76,36 +76,60 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 4. Validação Básica de Formulário de Contato
+    // 4. Handle Contact Form Submission to WhatsApp
     const contactForm = document.getElementById('contactForm');
-    if (contactForm) { // Verifica se o formulário existe na página
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Impede o envio padrão do formulário (que recarregaria a página)
+    const submitButton = document.querySelector('.form-submit-btn'); // Seleciona o botão de envio
+
+    if (contactForm && submitButton) {
+        submitButton.addEventListener('click', function(e) { // Adiciona um listener para o clique no botão
+            e.preventDefault(); // Impede o comportamento padrão do botão
 
             // Coleta os valores dos campos e remove espaços em branco extras
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const message = document.getElementById('message').value.trim();
+            const company = document.getElementById('company').value.trim(); // Coleta o nome da empresa
+            
+            // Coleta os tipos de serviço selecionados
+            const serviceCheckboxes = document.querySelectorAll('input[name="serviceType"]:checked');
+            const selectedServices = Array.from(serviceCheckboxes).map(cb => cb.parentNode.textContent.trim()).join(', ');
 
-            // Validação de campos vazios
+            // Validação básica (campos obrigatórios e formato de e-mail)
             if (name === '' || email === '' || message === '') {
-                alert('Por favor, preencha todos os campos obrigatórios.');
+                alert('Por favor, preencha todos os campos obrigatórios (Nome, E-mail, Mensagem).');
                 return; // Interrompe a função se houver campos vazios
             }
-
-            // Validação de formato de e-mail
             if (!validateEmail(email)) {
                 alert('Por favor, insira um endereço de e-mail válido.');
                 return; // Interrompe a função se o e-mail for inválido
             }
 
-            // Para fins de demonstração ou prototipagem, podemos simplesmente exibir uma mensagem de sucesso:
-            alert('Mensagem enviada com sucesso! Em breve entraremos em contato.');
-            contactForm.reset(); // Limpa o formulário após o "envio"
+            // Constrói a mensagem para o WhatsApp
+            let whatsappMessage = `Olá, meu nome é ${name}.`;
+            if (company) {
+                whatsappMessage += ` Sou da empresa ${company}.`;
+            }
+            whatsappMessage += `\nMeu e-mail é ${email}.`;
+            if (selectedServices) {
+                whatsappMessage += `\nServiços de interesse: ${selectedServices}.`;
+            }
+            whatsappMessage += `\nMensagem: ${message}`;
+
+            // !!! IMPORTANTE: SUBSTITUA '5531999999999' PELO SEU NÚMERO DE TELEFONE COM CÓDIGO DO PAÍS E DDD (ex: 55 para Brasil) !!!
+            const phoneNumber = '5531993051909'; 
+
+            // Constrói a URL do WhatsApp com a mensagem codificada
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+
+            // Abre o WhatsApp em uma nova aba/janela
+            window.open(whatsappUrl, '_blank'); 
+
+            // Opcional: Limpa o formulário após abrir o WhatsApp
+            contactForm.reset();
         });
     }
 
-    // Função auxiliar para validar formato de e-mail
+    // Função auxiliar para validar formato de e-mail (já existente)
     function validateEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
@@ -114,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 5. Animação de elementos ao scroll (Intersection Observer API)
     // Seleciona todos os elementos que devem ter animação ao entrar na tela
     const animateOnScrollElements = document.querySelectorAll(
-        '.service-card, .feature-item, .about-content, .contact-info-form-wrapper, .solution-card, .what-we-do, .services-detail-img, .stats-grid'
+        '.service-card, .feature-item, .about-content, .contact-form-wrapper, .solution-card, .what-we-do, .services-detail-img, .recommendation-intro-card, .review-card' // Atualizado para incluir os novos cards e os review-cards
     );
 
     // Opções para o Intersection Observer
@@ -130,6 +154,15 @@ document.addEventListener('DOMContentLoaded', function() {
             if (entry.isIntersecting) { // Se o elemento está visível na viewport
                 entry.target.classList.add('fade-in-up'); // Adiciona a classe que dispara a animação CSS
                 observer.unobserve(entry.target); // Para de observar o elemento para animar apenas uma vez
+
+                // Inicia a animação de contagem se for um elemento de estatística
+                if (entry.target.classList.contains('stat-item-animated')) {
+                    const numberSpan = entry.target.querySelector('.stat-number');
+                    const targetValue = parseInt(numberSpan.dataset.targetValue);
+                    const isYears = numberSpan.id === 'marketYearsCount';
+                    
+                    animateCount(numberSpan, 0, targetValue, 2000, isYears);
+                }
             }
         });
     }, observerOptions);
@@ -139,4 +172,60 @@ document.addEventListener('DOMContentLoaded', function() {
         el.classList.add('animate-on-scroll'); // Esta classe define o estado inicial (invisível/deslocado)
         observer.observe(el); // Começa a observar cada elemento
     });
+
+    // Animação de contagem para as estatísticas
+    const statItems = document.querySelectorAll('.stats-grid .stat-item');
+    if (statItems.length > 0) {
+        statItems.forEach(item => item.classList.add('stat-item-animated'));
+
+        const statsObserverOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.7
+        };
+
+        const statsObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.dataset.animated) {
+                    const numberSpan = entry.target.querySelector('.stat-number');
+                    const targetValue = parseInt(numberSpan.dataset.targetValue);
+                    const isYears = numberSpan.id === 'marketYearsCount';
+                    
+                    animateCount(numberSpan, 0, targetValue, 2500, isYears);
+                    entry.target.dataset.animated = 'true';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, statsObserverOptions);
+
+        statItems.forEach(item => {
+            statsObserver.observe(item);
+        });
+    }
+
+    function animateCount(element, start, end, duration, isYears) {
+        let startTime = null;
+        const step = (currentTime) => {
+            if (!startTime) startTime = currentTime;
+            const progress = Math.min((currentTime - startTime) / duration, 1);
+            let value = Math.floor(progress * (end - start) + start);
+
+            if (isYears) {
+                element.textContent = '+' + value;
+            } else {
+                element.textContent = '+' + value;
+            }
+
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else {
+                if (isYears) {
+                    element.textContent = '+' + end;
+                } else {
+                    element.textContent = '+' + end;
+                }
+            }
+        };
+        requestAnimationFrame(step);
+    }
 });

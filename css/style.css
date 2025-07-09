@@ -1188,6 +1188,7 @@ h3::after { content: none; }
     position: relative;
     overflow: hidden;
     background-image: linear-gradient(135deg, rgba(var(--color-highlight-red-rgb), 0.05), rgba(var(--color-highlight-orange-rgb), 0.02));
+    margin: 0 auto; /* Esta linha centraliza o card de contato */
 }
 
 .contact-form-wrapper::before {
@@ -1307,7 +1308,7 @@ h3::after { content: none; }
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-top: 50px;
+    margin-top: 80px;
     padding: 0 25px; /* Adiciona padding para telas menores */
 }
 
