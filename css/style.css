@@ -371,9 +371,10 @@ h3::after { content: none; }
     height: 60px;
 }
 
+/* Estilos da lista de navegação (desktop) */
 .main-nav .nav-list {
     list-style: none;
-    display: flex;
+    display: flex; /* Visível por padrão no desktop */
 }
 
 .main-nav .nav-list li {
@@ -401,15 +402,15 @@ h3::after { content: none; }
     width: 100%;
 }
 
-/* Menu Hamburger (Mobile) */
+/* Menu Hamburger (Mobile) - ESCONDIDO por padrão, visível apenas em mobile */
 .hamburger-menu {
-    display: none;
+    display: none; /* ESCONDIDO por padrão no desktop */
     background: none;
     border: none;
     cursor: pointer;
     padding: 8px;
     position: relative;
-    z-index: 1100; /* Garante que o botão fique acima do overlay */
+    z-index: 1100; /* Garante que o botão fique acima do menu overlay */
 }
 
 .hamburger-menu .bar {
@@ -461,7 +462,7 @@ h3::after { content: none; }
     left: 0;
     width: 100%;
     height: 120px;
-    background-color: var(--color-background-light); /* Cor do fundo da próxima seção */
+    background-color: var(--color-background-light);
     transform: skewY(-2deg);
     transform-origin: bottom right;
     z-index: 10;
@@ -477,14 +478,14 @@ h3::after { content: none; }
     margin-left: 10%;
 }
 
-.hero-content p { /* Geral para parágrafos no hero content, será sobrescrito por .slogan */
+.hero-content p {
     font-family: var(--font-body);
     font-size: 1.25em;
     font-weight: 300;
     margin-bottom: 35px;
     color: var(--color-text-on-dark);
     line-height: 1.6;
-    text-align: left; /* Mantém o alinhamento esquerdo por padrão */
+    text-align: left;
 }
 
 /* Estilo para o slogan "Oficina Mecânica..." */
@@ -570,8 +571,8 @@ h3::after { content: none; }
 }
 
 .solution-card {
-    background-color: var(--color-background-dark); /* Fundo escuro para os cards normais */
-    color: var(--color-text-on-dark); /* Texto claro para os cards normais */
+    background-color: var(--color-background-dark);
+    color: var(--color-text-on-dark);
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -739,14 +740,14 @@ h3::after { content: none; }
 .services-section::after {
     content: '';
     position: absolute;
-    bottom: -60px; /* Ajuste para que 60px fiquem para fora da seção */
+    bottom: -60px;
     left: 0;
     width: 100%;
     height: 120px;
-    background-color: var(--color-background-dark); /* Cor do fundo da próxima seção (galeria) */
+    background-color: var(--color-background-dark);
     transform: skewY(-2deg);
     transform-origin: bottom right;
-    z-index: 2; /* Z-index menor para ficar abaixo do conteúdo da próxima seção */
+    z-index: 2;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
@@ -815,11 +816,11 @@ h3::after { content: none; }
 /* ================================== */
 .gallery-section {
     background-color: var(--color-background-dark);
-    padding-top: 130px; /* Original 70px + 60px para compensar o skew negativo */
+    padding-top: 130px;
     padding-bottom: 70px;
     position: relative;
-    z-index: 1; /* Z-index normal para a seção, estará abaixo do ::after da anterior */
-    margin-top: -60px; /* Puxa a seção para cima para o overlap visual com o ::after */
+    z-index: 1;
+    margin-top: -60px;
 }
 .gallery-section::before {
     content: '';
@@ -1066,22 +1067,15 @@ h3::after { content: none; }
 
 .review-header {
     display: flex;
-    /* Remover align-items: center; pois não temos a foto agora */
-    margin-bottom: 15px;
-    flex-direction: column; /* Alinha nome/estrelas/data um abaixo do outro */
+    flex-direction: column; /* Coloca nome, estrelas e data um abaixo do outro */
     align-items: flex-start; /* Alinha o conteúdo à esquerda dentro do header */
+    margin-bottom: 15px;
 }
 
 /* Removido estilo para .reviewer-photo */
 /* .reviewer-photo { ... } */
 
-.reviewer-info { /* Este div foi removido do HTML na última atualização */
-    /* Se você quiser manter um container para nome/estrelas/data, você precisará readicionar este div no HTML */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    flex-grow: 1;
-}
+/* .reviewer-info não é mais um div separado no HTML, os elementos estão diretamente em .review-header */
 
 .reviewer-name {
     font-weight: 600;
@@ -1093,7 +1087,7 @@ h3::after { content: none; }
 .stars {
     color: var(--color-highlight-yellow);
     font-size: 0.95em;
-    margin-bottom: 3px; /* Espaço entre estrelas e data */
+    margin-bottom: 3px;
 }
 
 .review-date {
@@ -1422,17 +1416,61 @@ h3::after { content: none; }
 @media (max-width: 767px) {
     .section-padding { padding: 40px 0; }
     
+    .main-title { font-size: 2.5em; text-align: center; letter-spacing: 0.5px; }
+    .main-title .top-word, .main-title .car-word { transform: skewX(0deg); margin-right: 0px; }
+
     h1 { font-size: 2.2em; text-align: center; }
     h2 { font-size: 2em; }
     h3 { font-size: 1.4em; }
 
     .main-header .logo img { height: 45px; }
     .main-nav .nav-list {
-        top: 75px;
-        padding: 15px 0;
+        /* Mobile menu overlay */
+        display: none; /* ESCONDIDO por padrão */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: fixed; /* Fixado para cobrir a tela */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(var(--color-background-light-rgb), 0.98); /* Fundo quase sólido */
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        padding-top: 60px; /* Espaço para o header/botão hambúrguer */
+        z-index: 1050; /* Acima do header, abaixo do botão hambúrguer */
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+        transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
     }
-    .main-nav .nav-list a { font-size: 1em; }
-    .hamburger-menu { display: block; }
+
+    /* ESTADO ATIVO DO MENU MOBILE */
+    .main-nav.active .nav-list {
+        display: flex; /* Torna visível */
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible;
+    }
+
+    /* Estilo dos itens de navegação dentro do menu mobile */
+    .main-nav .nav-list li {
+        margin: 15px 0;
+    }
+    .main-nav .nav-list a {
+        font-size: 1.5em; /* Aumenta o tamanho da fonte */
+        padding: 10px 0;
+        color: var(--color-text-primary);
+        letter-spacing: 1px;
+    }
+    /* Remover a linha de destaque no hover para mobile se preferir um visual mais limpo */
+    .main-nav .nav-list a::after {
+        content: none; 
+    }
+    .main-nav .nav-list a:hover {
+        color: var(--color-highlight-red);
+    }
+
 
     /* Hero Section */
     .hero-section {
