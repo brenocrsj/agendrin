@@ -94,15 +94,15 @@
                             <img src="img/services-background.png" alt="Oficina Top Car" class="services-detail-img">
                             <div class="stats-grid">
                                 <div class="stat-item">
-                                    <span class="stat-number">+5</span>
+                                    <span class="stat-number" id="marketYearsCount" data-target-value="5">0</span>
                                     <span class="stat-text">ANOS DE MERCADO</span>
                                 </div>
                                 <div class="stat-item">
-                                    <span class="stat-number">+1000</span>
+                                    <span class="stat-number" id="clientsServedCount" data-target-value="1000">0</span>
                                     <span class="stat-text">CLIENTES ATENDIDOS</span>
                                 </div>
                             </div>
-                        </div>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -223,15 +223,19 @@
                 <h2>O que nossos clientes estão comentando?</h2>
                 <h3>Veja o que dizem sobre a Top Car no Google!</h3>
 
+                <div class="recommendation-intro-card">
+                    <p>Valorizamos a opinião de cada cliente! Sua satisfação é nosso maior objetivo. Leia abaixo o que dizem sobre a qualidade dos nossos serviços e o atendimento dedicado que você encontra na Top Car.</p>
+                    <p>Confira a credibilidade e o carinho que construímos ao longo dos anos, com avaliações reais que refletem nosso compromisso com a excelência.</p>
+                </div>
                 <div class="reviews-grid">
                     <div class="review-card">
                         <div class="review-header">
-                            <div class="reviewer-info"> <span class="reviewer-name">João Silva</span>
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">João Silva</span>
                                 <div class="stars">
                                     <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                                 </div>
-                                <span class="review-date">05 de Julho de 2025</span>
-                            </div>
+                                </div>
                         </div>
                         <p class="review-text">"Excelente atendimento e serviço de alta qualidade! Resolveram o problema do meu carro rapidamente e com muita eficiência. Recomendo a Top Car de olhos fechados!"</p>
                         <span class="review-source">Via Google</span>
@@ -244,8 +248,7 @@
                                 <div class="stars">
                                     <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
                                 </div>
-                                <span class="review-date">28 de Junho de 2025</span>
-                            </div>
+                                </div>
                         </div>
                         <p class="review-text">"Profissionais muito competentes e honestos. O preço é justo e o serviço é impecável. Minha família só leva os carros aqui agora. Estão de parabéns!"</p>
                         <span class="review-source">Via Google</span>
@@ -258,8 +261,7 @@
                                 <div class="stars">
                                     <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                                 </div>
-                                <span class="review-date">20 de Junho de 2025</span>
-                            </div>
+                                </div>
                         </div>
                         <p class="review-text">"Ambiente limpo, equipamentos modernos e a equipe sempre pronta para ajudar. Fui muito bem atendido e o diagnóstico foi preciso. Super indico a Top Car!"</p>
                         <span class="review-source">Via Google</span>
@@ -311,11 +313,12 @@
                     </form>
                 </div>
             </div>
-            <div class="google-map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4658.830819955775!2d-43.47738202393433!3d-19.94524048144658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa4372d460451bb%3A0x83c91d0e3def02a6!2sOficina%20Top%20Car!5e1!3m2!1spt-BR!2sbr!4v1752066718970!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="google-map-container">
+                <div class="google-map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4658.830819955775!2d-43.47738202393433!3d-19.94524048144658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa4372d460451bb%3A0x83c91d0e3def02a6!2sOficina%20Top%20Car!5e1!3m2!1spt-BR!2sbr!4v1752066718970!5m2!1spt-BR!2sbr" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
             </div>
-        </section>
+            </section>
     </main>
 
     <footer class="main-footer">
@@ -325,8 +328,6 @@
     </footer>
 
     <button id="backToTopBtn" title="Voltar ao Topo"><i class="fas fa-arrow-up"></i></button>
-
-
 
     <script src="js/script.js"></script>
 </body>

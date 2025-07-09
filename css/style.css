@@ -659,6 +659,7 @@ h3::after { content: none; }
     border: none;
 }
 
+/* Alterações para o estilo das estatísticas (contadores) */
 .stats-grid {
     display: flex;
     justify-content: space-around;
@@ -690,6 +691,7 @@ h3::after { content: none; }
     text-align: center;
     position: relative;
     z-index: 1;
+    flex: 1; /* Garante que cada item ocupe o mesmo espaço */
 }
 
 .stat-number {
@@ -1014,11 +1016,135 @@ h3::after { content: none; }
 }
 
 /* ================================== */
+/* SEÇÃO RECOMENDAÇÕES               */
+/* ================================== */
+.recommendations-section {
+    background-color: var(--color-background-dark);
+    padding: 70px 0;
+    color: var(--color-text-on-dark);
+    text-align: center;
+}
+
+.recommendations-section h2,
+.recommendations-section h3 {
+    color: var(--color-text-on-dark);
+}
+
+.recommendations-section h2::after {
+    background: linear-gradient(to right, var(--color-highlight-red), var(--color-highlight-yellow));
+}
+
+/* Novo card de introdução para recomendações */
+.recommendation-intro-card {
+    background-color: var(--color-background-dark); /* Fundo escuro */
+    border: 2px solid var(--color-highlight-yellow); /* Borda amarela */
+    border-radius: 10px;
+    padding: 30px;
+    margin: 0 auto 50px auto; /* Centraliza e adiciona margem inferior */
+    max-width: 800px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    text-align: center;
+    color: var(--color-text-on-dark);
+    line-height: 1.6;
+    font-size: 1.1em;
+    font-weight: 300;
+}
+
+.recommendation-intro-card p {
+    margin-bottom: 15px;
+    font-family: var(--font-body);
+}
+
+.recommendation-intro-card p:last-child {
+    margin-bottom: 0;
+}
+
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+    margin-bottom: 50px;
+}
+
+.review-card {
+    background-color: var(--color-background-light); /* Fundo claro para o card */
+    color: var(--color-text-primary); /* Texto escuro */
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 200px; /* Garante uma altura mínima para consistência */
+    border: 2px solid transparent;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    border-color: var(--color-highlight-orange);
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.reviewer-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.reviewer-name {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: var(--color-text-primary);
+    margin-bottom: 5px;
+}
+
+.stars {
+    color: var(--color-highlight-yellow);
+    font-size: 0.9em;
+    margin-top: 5px;
+    margin-bottom: 5px; /* Adicionado para compensar a remoção da data */
+}
+
+/* Removido o estilo para .review-date pois o span será removido */
+
+.review-text {
+    font-style: italic;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin-bottom: 15px;
+    flex-grow: 1; /* Permite que o texto ocupe o espaço disponível */
+}
+
+.review-source {
+    font-size: 0.8em;
+    color: var(--color-text-primary);
+    font-weight: 500;
+    text-align: right;
+    display: block;
+    margin-top: auto; /* Empurra a fonte para a parte inferior do card */
+}
+
+.reviews-cta {
+    margin-top: 40px;
+}
+
+/* ================================== */
 /* SEÇÃO CONTATO                     */
 /* ================================== */
 .contact-section {
     background-color: var(--color-background-mid);
     padding: 70px 0;
+    text-align: center; /* Centraliza o conteúdo principal */
 }
 
 .contact-section h2 {
@@ -1040,133 +1166,167 @@ h3::after { content: none; }
     margin-bottom: 40px;
 }
 
-.contact-info-form-wrapper {
+/* Container flex para centralizar o formulário */
+.contact-form-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    justify-content: center;
+    justify-content: center; /* Centraliza o wrapper do formulário */
     align-items: flex-start;
+    gap: 30px;
     margin-bottom: 50px;
 }
 
-.contact-info {
-    flex: 1;
-    min-width: 300px;
-    background-color: var(--color-background-light);
-    color: var(--color-text-secondary);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    border: 2px solid var(--color-highlight-red);
-}
 
-.contact-info p {
-    font-family: var(--font-body);
-    font-size: 1em;
-    font-weight: 300;
-    margin-bottom: 12px;
-    color: var(--color-text-secondary);
-}
-
-.contact-info p i {
-    color: var(--color-highlight-red);
-    margin-right: 10px;
-    font-size: 1.1em;
-}
-
-.contact-info a {
-    color: var(--color-text-secondary);
-}
-
-.contact-info a:hover {
-    color: var(--color-highlight-orange);
-}
-
-.social-links {
-    margin-top: 20px;
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-}
-
-.social-links a {
-    font-size: 2em;
-    color: var(--color-text-primary);
-    transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-.social-links a:hover {
-    color: var(--color-highlight-red);
-    transform: scale(1.15);
-}
-
+/* Estilo Premium para o Card de Contato (contact-form-wrapper) */
 .contact-form-wrapper {
-    flex: 1;
-    min-width: 350px;
+    flex: 0 1 600px; /* Permite que o card cresça até 600px, mas encolha */
+    max-width: 600px; /* Largura máxima para o formulário */
     background-color: var(--color-background-light);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    border: 2px solid var(--color-highlight-orange);
+    padding: 40px; /* Aumenta o padding */
+    border-radius: 15px; /* Bordas mais arredondadas */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25); /* Sombra mais pronunciada */
+    border: none; /* Remove a borda existente */
+    position: relative;
+    overflow: hidden;
+    background-image: linear-gradient(135deg, rgba(var(--color-highlight-red-rgb), 0.05), rgba(var(--color-highlight-orange-rgb), 0.02));
+}
+
+.contact-form-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 100px;
+    height: 100px;
+    background-color: var(--color-highlight-red);
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.3;
+    z-index: 0;
+}
+
+.contact-form-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 80px;
+    height: 80px;
+    background-color: var(--color-highlight-yellow);
+    border-radius: 50%;
+    filter: blur(30px);
+    opacity: 0.2;
+    z-index: 0;
 }
 
 .contact-form h3 {
-    font-size: 1.8em;
-    font-weight: 600;
+    font-size: 2em;
+    font-weight: 700;
     color: var(--color-text-primary);
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(to right, var(--color-highlight-red), var(--color-highlight-orange));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
+    margin-bottom: 8px;
+    font-weight: 600;
     color: var(--color-text-primary);
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group textarea {
     width: 100%;
-    padding: 10px;
+    padding: 12px 15px; /* Aumenta o padding */
     border: 1px solid var(--color-background-mid);
-    border-radius: 5px;
-    font-size: 0.95em;
+    border-radius: 8px; /* Bordas mais arredondadas */
+    font-size: 1em;
     font-family: var(--font-body);
     background-color: var(--color-background-light);
     color: var(--color-text-primary);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .form-group input[type="text"]:focus,
 .form-group input[type="email"]:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: var(--color-highlight-red);
-    box-shadow: 0 0 0 2px rgba(var(--color-highlight-red-rgb), 0.2);
+    border-color: var(--color-highlight-orange); /* Foco com a cor laranja */
+    box-shadow: 0 0 0 3px rgba(var(--color-highlight-orange-rgb), 0.3); /* Sombra de foco colorida */
 }
 
 .form-group textarea {
     resize: vertical;
+    min-height: 100px;
+}
+
+.checkbox-options label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: 400;
+    font-size: 0.95em;
+    color: var(--color-text-secondary);
+}
+
+.checkbox-options input[type="checkbox"] {
+    margin-right: 10px;
+    accent-color: var(--color-highlight-red); /* Cor do checkbox */
+    width: 18px;
+    height: 18px;
 }
 
 .contact-form .btn-primary {
     width: 100%;
-    padding: 16px;
-    font-size: 1.1em;
+    padding: 18px; /* Aumenta o padding do botão */
+    font-size: 1.2em; /* Aumenta a fonte do botão */
+    margin-top: 20px;
+    background-image: linear-gradient(152deg, var(--color-highlight-red) 0%, var(--color-highlight-orange) 100%);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+.contact-form .btn-primary:hover {
+    background-image: linear-gradient(152deg, var(--color-highlight-orange) 0%, var(--color-highlight-yellow) 100%);
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* Contêiner para centralizar e dimensionar o mapa */
+.google-map-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 50px;
+    padding: 0 25px; /* Adiciona padding para telas menores */
 }
 
 .google-map {
-    margin-top: 50px;
-    border-radius: 10px;
+    width: 100%;
+    max-width: 800px; /* Largura máxima para o mapa */
+    border-radius: 15px; /* Bordas arredondadas como um card */
     overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    border: 3px solid var(--color-highlight-yellow);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25); /* Sombra proeminente */
+    border: 3px solid var(--color-highlight-yellow); /* Borda amarela */
+    margin: 0 auto; /* Garante centralização */
 }
+
+.google-map iframe {
+    width: 100%;
+    height: 350px; /* Altura do mapa */
+    border: 0;
+}
+
 
 /* ================================== */
 /* FOOTER                            */
@@ -1284,6 +1444,15 @@ h3::after { content: none; }
     .service-card h3 { font-size: 1em; }
     .service-card .service-icon { font-size: 2.5em; }
 
+    .recommendation-intro-card {
+        padding: 25px;
+        font-size: 1em;
+    }
+
+    .review-card { min-height: 180px; padding: 20px;}
+    .reviewer-name { font-size: 1em; }
+    .review-text { font-size: 0.9em; }
+
     .about-section h2 { font-size: 2.2em; padding: 0 5%; }
     .about-section h3 { font-size: 1.1em; }
     .about-content { font-size: 1em; }
@@ -1297,11 +1466,15 @@ h3::after { content: none; }
 
     .contact-section h2 { font-size: 1.1em; }
     .contact-section h3 { font-size: 2.2em; }
-    .contact-info, .contact-form-wrapper { padding: 25px; }
-    .contact-info p { font-size: 0.95em; }
-    .contact-form h3 { font-size: 1.6em; }
-    .form-group label { font-size: 0.85em; }
-    .form-group input, .form-group textarea { font-size: 0.9em; }
+    .contact-form-wrapper { padding: 30px; }
+    .contact-form h3 { font-size: 1.8em; }
+    .form-group label { font-size: 0.9em; }
+    .form-group input, .form-group textarea { font-size: 0.95em; }
+    .contact-form .btn-primary { padding: 16px; font-size: 1.1em; }
+
+    .google-map-container { padding: 0 15px; }
+    .google-map { max-width: 600px; height: 300px; }
+    .google-map iframe { height: 300px; }
 
     #backToTopBtn {
         width: 50px; height: 50px; font-size: 1.5em;
@@ -1433,6 +1606,18 @@ h3::after { content: none; }
     .services-grid { grid-template-columns: 1fr; padding: 0 10px; }
     .service-card { margin: 5px 0; }
 
+    .recommendation-intro-card {
+        padding: 20px;
+        font-size: 0.9em;
+    }
+
+    /* Recommendations Section */
+    .reviews-grid { grid-template-columns: 1fr; padding: 0 10px; }
+    .review-card { min-height: unset; margin: 5px 0; }
+    .reviewer-name { font-size: 0.95em; }
+    .review-text { font-size: 0.85em; }
+
+
     /* About Section */
     .about-section h2 { font-size: 1.8em; padding: 0 5%; }
     .about-section h3 { font-size: 1em; }
@@ -1447,9 +1632,15 @@ h3::after { content: none; }
     /* Contact Section */
     .contact-section h2 { font-size: 1em; }
     .contact-section h3 { font-size: 1.8em; }
-    .contact-info-form-wrapper { flex-direction: column; gap: 15px; padding: 0 10px; }
-    .contact-info, .contact-form-wrapper { padding: 15px; }
-    .google-map { height: 180px; }
+    .contact-form-wrapper { padding: 20px; }
+    .contact-form h3 { font-size: 1.6em; }
+    .form-group label { font-size: 0.85em; }
+    .form-group input, .form-group textarea { font-size: 0.9em; }
+    .contact-form .btn-primary { padding: 14px; font-size: 1em; }
+
+    .google-map-container { padding: 0 10px; }
+    .google-map { max-width: 100%; height: 250px; }
+    .google-map iframe { height: 250px; }
 
     #backToTopBtn {
         width: 40px; height: 40px; font-size: 1.2em;
