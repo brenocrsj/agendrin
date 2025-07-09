@@ -21,6 +21,8 @@
     --color-highlight-red-rgb: 192, 0, 0;     /* RGB de #C00000 */
     --color-highlight-orange-rgb: 255, 165, 0; /* RGB de #FFA500 */
     --color-highlight-yellow-rgb: 255, 215, 0; /* RGB de #FFD700 */
+    --color-background-light-rgb: 249, 249, 249; /* RGB de #F9F9F9 (para overlay) */
+
 
     /* Fontes */
     --font-heading: 'Oswald', sans-serif;
@@ -43,7 +45,7 @@ html {
 body {
     font-family: var(--font-body);
     line-height: 1.6em;
-    color: var(--color-text-secondary);
+    color: var(--color-text-secondary); /* Texto secundário para o corpo padrão */
     background-color: var(--color-background-light);
     overflow-x: hidden; /* Evita rolagem horizontal em excesso */
 }
@@ -51,7 +53,7 @@ body {
 /* Classe para bloquear a rolagem do body quando o menu mobile está aberto */
 body.menu-open {
     overflow: hidden;
-    height: 100vh; /* Ocupa a altura total do viewport */
+    height: 100vh;
 }
 
 .container {
@@ -167,7 +169,7 @@ h3::after { content: none; }
     color: var(--color-text-primary);
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
-    background-clip: text; /* Vendor prefix fix */
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -200,7 +202,7 @@ h3::after { content: none; }
     font-weight: 800;
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
-    background-clip: text; /* Vendor prefix fix */
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -407,7 +409,7 @@ h3::after { content: none; }
     cursor: pointer;
     padding: 8px;
     position: relative;
-    z-index: 1100;
+    z-index: 1100; /* Garante que o botão fique acima do overlay */
 }
 
 .hamburger-menu .bar {
@@ -482,6 +484,7 @@ h3::after { content: none; }
     margin-bottom: 35px;
     color: var(--color-text-on-dark);
     line-height: 1.6;
+    text-align: left; /* Mantém o alinhamento esquerdo por padrão */
 }
 
 /* Estilo para o slogan "Oficina Mecânica..." */
@@ -531,7 +534,7 @@ h3::after { content: none; }
     color: var(--color-text-primary);
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
-    background-clip: text; /* Vendor prefix fix */
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -601,7 +604,7 @@ h3::after { content: none; }
     color: var(--color-text-primary);
     background: linear-gradient(to right, var(--color-text-primary) 0%, var(--color-highlight-red) 100%);
     -webkit-background-clip: text;
-    background-clip: text; /* Vendor prefix fix */
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
     margin-bottom: 10px;
@@ -739,7 +742,7 @@ h3::after { content: none; }
     bottom: -60px; /* Ajuste para que 60px fiquem para fora da seção */
     left: 0;
     width: 100%;
-    height: 120px; /* Altura da faixa diagonal */
+    height: 120px;
     background-color: var(--color-background-dark); /* Cor do fundo da próxima seção (galeria) */
     transform: skewY(-2deg);
     transform-origin: bottom right;
@@ -1022,11 +1025,11 @@ h3::after { content: none; }
 /* SEÇÃO RECOMENDAÇÕES                */
 /* ================================== */
 .recommendations-section {
-    background-color: var(--color-background-light); /* Fundo claro */
+    background-color: var(--color-background-light);
     padding: 70px 0;
     text-align: center;
-    position: relative; /* Para garantir z-index */
-    z-index: 5; /* Garante que fique acima da section services se houver overlap */
+    position: relative;
+    z-index: 5;
 }
 
 .recommendations-section h2 {
@@ -1046,63 +1049,68 @@ h3::after { content: none; }
 }
 
 .review-card {
-    background-color: var(--color-background-light); /* Fundo branco/off-white para minimalismo */
-    padding: 25px; /* Padding um pouco reduzido para minimalismo */
+    background-color: var(--color-background-light);
+    padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08); /* Sombra bem sutil */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     text-align: left;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    border: 1px solid var(--color-background-mid); /* Borda fina e sutil */
+    border: 1px solid var(--color-background-mid);
 }
 
 .review-card:hover {
-    transform: translateY(-3px); /* Elevação suave */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.12); /* Sombra um pouco mais forte no hover */
-    border-color: var(--color-highlight-red); /* Borda de destaque no hover */
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+    border-color: var(--color-highlight-red);
 }
 
 .review-header {
     display: flex;
-    align-items: center;
+    /* Remover align-items: center; pois não temos a foto agora */
     margin-bottom: 15px;
+    flex-direction: column; /* Alinha nome/estrelas/data um abaixo do outro */
+    align-items: flex-start; /* Alinha o conteúdo à esquerda dentro do header */
 }
 
-.reviewer-photo {
-    width: 50px; /* Tamanho ajustado para minimalismo */
-    height: 50px; /* Tamanho ajustado */
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 15px;
-    border: 2px solid var(--color-background-mid); /* Borda mais sutil */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Sombra mais suave */
-}
+/* Removido estilo para .reviewer-photo */
+/* .reviewer-photo { ... } */
 
-.reviewer-info {
+.reviewer-info { /* Este div foi removido do HTML na última atualização */
+    /* Se você quiser manter um container para nome/estrelas/data, você precisará readicionar este div no HTML */
     display: flex;
     flex-direction: column;
     justify-content: center;
+    flex-grow: 1;
 }
 
 .reviewer-name {
     font-weight: 600;
     color: var(--color-text-primary);
-    font-size: 1.05em; /* Ajuste */
+    font-size: 1.05em;
+    margin-bottom: 3px;
 }
 
 .stars {
     color: var(--color-highlight-yellow);
-    font-size: 0.95em; /* Ajuste */
+    font-size: 0.95em;
+    margin-bottom: 3px; /* Espaço entre estrelas e data */
+}
+
+.review-date {
+    font-size: 0.8em;
+    color: var(--color-text-secondary);
+    display: block;
 }
 
 .review-text {
-    font-size: 0.9em; /* Ajuste */
+    font-size: 0.9em;
     color: var(--color-text-secondary);
     line-height: 1.5;
     margin-bottom: 15px;
 }
 
 .review-source {
-    font-size: 0.75em; /* Ajuste */
+    font-size: 0.75em;
     color: var(--color-text-secondary);
     font-style: italic;
     text-align: right;
