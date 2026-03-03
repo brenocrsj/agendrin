@@ -1,0 +1,95 @@
+services:
+  api:
+    build: .
+    container_name: agendrin-api
+    command: >
+      sh -c "
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000
+      "
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_DEBUG: "1"
+      DJANGO_SECRET_KEY: "dev-secret-key"
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,0.0.0.0,.github.dev"
+
+      POSTGRES_DB: "agendrin"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_HOST: "postgres"
+      POSTGRES_PORT: "5432"
+
+      REDIS_URL: "redis://redis:6379/0"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery_worker:
+    build: .
+    container_name: agendrin-celery-worker
+    command: celery -A agendrin_api worker -l info
+    volumes:
+      - .:/app
+    environment:
+      POSTGRES_DB: "agendrin"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_HOST: "postgres"
+      POSTGRES_PORT: "5432"
+      REDIS_URL: "redis://redis:6379/0"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery_beat:
+    build: .
+    container_name: agendrin-celery-beat
+    command: celery -A agendrin_api beat -l info
+    volumes:
+      - .:/app
+    environment:
+      POSTGRES_DB: "agendrin"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_HOST: "postgres"
+      POSTGRES_PORT: "5432"
+      REDIS_URL: "redis://redis:6379/0"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16
+    container_name: agendrin-postgres
+    environment:
+      POSTGRES_DB: "agendrin"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d agendrin"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7
+    container_name: agendrin-redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  pgdata:
