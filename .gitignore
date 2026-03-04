@@ -1,15 +1,10 @@
-# arquivos lixo que apareceram no root
-CACHED
-exporting
-naming
-reading
-transferring
-writing
-=
-[api
-[api]
-[celery_beat
-[celery_beat]
-[celery_worker
-[celery_worker]
-[internal]
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+node_modules/
+dist/
+
+.env
+venv/
