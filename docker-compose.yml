@@ -2,13 +2,14 @@ services:
   api:
     build: .
     container_name: agendrin-api
+    working_dir: /app/backend
     command: >
       sh -c "
       python manage.py migrate &&
       python manage.py runserver 0.0.0.0:8000
       "
     volumes:
-      - .:/app
+      - ./backend:/app/backend
     ports:
       - "8000:8000"
     environment:
@@ -32,9 +33,10 @@ services:
   celery_worker:
     build: .
     container_name: agendrin-celery-worker
+    working_dir: /app/backend
     command: celery -A agendrin_api worker -l info
     volumes:
-      - .:/app
+      - ./backend:/app/backend
     environment:
       POSTGRES_DB: "agendrin"
       POSTGRES_USER: "postgres"
@@ -51,9 +53,10 @@ services:
   celery_beat:
     build: .
     container_name: agendrin-celery-beat
+    working_dir: /app/backend
     command: celery -A agendrin_api beat -l info
     volumes:
-      - .:/app
+      - ./backend:/app/backend
     environment:
       POSTGRES_DB: "agendrin"
       POSTGRES_USER: "postgres"
