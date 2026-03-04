@@ -8,7 +8,10 @@ class Tenant(models.Model):
     phone = models.CharField(max_length=30, blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
-    trial_ends_at = models.DateTimeField()
+
+    # Pode começar vazio; o save() abaixo preenche automaticamente.
+    trial_ends_at = models.DateTimeField(null=True, blank=True)
+
     subscription_status = models.CharField(max_length=20, default="TRIAL")  # TRIAL | ACTIVE | PAST_DUE | CANCELED
 
     primary_color = models.CharField(max_length=20, default="#FFFFFF")  # branco
