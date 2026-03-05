@@ -8,7 +8,7 @@ export default function LandingPage() {
       <header className="border-b border-slate-200 bg-white">
         <div className="container-page flex items-center justify-between py-4">
           <div className="text-2xl font-extrabold tracking-tight text-slate-900">
-            agendin
+            agendrin
           </div>
 
           <div className="flex items-center gap-2">
@@ -68,7 +68,7 @@ export default function LandingPage() {
 
       <footer className="border-t border-slate-200 bg-white">
         <div className="container-page py-8 text-sm text-slate-500">
-          agendin • © {new Date().getFullYear()}
+          agendrin • © {new Date().getFullYear()}
         </div>
       </footer>
     </div>
