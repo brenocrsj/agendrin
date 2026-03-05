@@ -27,9 +27,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <div>
         <div className="text-2xl font-semibold">Dashboard</div>
-        <div className="mt-1 text-sm text-slate-400">
-          Visão geral do seu negócio hoje.
-        </div>
+        <div className="mt-1 text-sm text-slate-400">Visão geral do seu negócio hoje.</div>
       </div>
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
