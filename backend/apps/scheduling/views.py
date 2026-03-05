@@ -94,3 +94,23 @@ def public_create_appointment(request, slug):
     ser.is_valid(raise_exception=True)
     appt = ser.save()
     return Response({"id": appt.id, "status": appt.status})
+
+@api_view(["GET"])
+@permission_classes([permissions.AllowAny])
+def public_catalog(request, slug):
+    tenant = get_object_or_404(Tenant, slug=slug)
+
+    services = Service.objects.filter(tenant=tenant, is_active=True).order_by("name")
+    professionals = Professional.objects.filter(tenant=tenant, is_active=True).order_by("name")
+
+    return Response({
+        "tenant": {
+            "name": tenant.name,
+            "slug": tenant.slug,
+            "primary_color": tenant.primary_color,
+            "secondary_color": tenant.secondary_color,
+            "phone": tenant.phone,
+        },
+        "services": ServiceSerializer(services, many=True).data,
+        "professionals": ProfessionalSerializer(professionals, many=True).data,
+    })

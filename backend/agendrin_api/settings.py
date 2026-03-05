@@ -8,11 +8,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-secret-key-change-me")
 DEBUG = os.getenv("DJANGO_DEBUG", "0") == "1"
 
-allowed_hosts_env = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,0.0.0.0,.github.dev")
+allowed_hosts_env = os.getenv(
+    "DJANGO_ALLOWED_HOSTS",
+    "localhost,127.0.0.1,0.0.0.0,.github.dev,.app.github.dev"
+)
 ALLOWED_HOSTS = [h.strip() for h in allowed_hosts_env.split(",") if h.strip()]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.github.dev",
+    "https://*.app.github.dev",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
 ]

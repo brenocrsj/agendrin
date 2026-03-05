@@ -14,3 +14,12 @@ urlpatterns = [
     path("public/<slug:slug>/availability/", public_availability),
     path("public/<slug:slug>/appointments/", public_create_appointment),
 ]
+
+from .views import public_availability, public_create_appointment, public_catalog
+
+urlpatterns = [
+    path("", include(router.urls)),
+    path("public/<slug:slug>/catalog/", public_catalog),
+    path("public/<slug:slug>/availability/", public_availability),
+    path("public/<slug:slug>/appointments/", public_create_appointment),
+]
