@@ -1,28 +1,20 @@
-import Sidebar from "./Sidebar"
-import Topbar from "./Topbar"
+import Sidebar from "./Sidebar";
+import Topbar from "./Topbar";
 
-export default function AppShell({children}){
+export default function AppShell({ children }) {
+  return (
+    <div className="min-h-screen bg-[#f6f8fb]">
+      <div className="flex">
+        <Sidebar />
 
-return(
+        <div className="flex-1 min-w-0">
+          <Topbar />
 
-<div className="flex min-h-screen">
-
-<Sidebar/>
-
-<div className="flex-1">
-
-<Topbar/>
-
-<div className="p-6">
-
-{children}
-
-</div>
-
-</div>
-
-</div>
-
-)
-
+          <main className="px-6 py-6">
+            <div className="mx-auto max-w-[1200px]">{children}</div>
+          </main>
+        </div>
+      </div>
+    </div>
+  );
 }

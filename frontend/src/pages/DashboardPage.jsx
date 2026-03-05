@@ -1,46 +1,79 @@
 import Card from "../ui/Card";
-import Table from "../ui/Table";
+import Button from "../ui/Button";
 
 export default function DashboardPage() {
-  const kpis = [
-    { title: "Agendamentos Hoje", value: "8", subtitle: "2 pendentes • 6 confirmados" },
-    { title: "Clientes", value: "124", subtitle: "+12 este mês" },
-    { title: "Profissionais", value: "4", subtitle: "Todos ativos" },
-    { title: "Receita (mês)", value: "R$ 7.320", subtitle: "↑ 18% vs mês anterior" }
-  ];
-
-  const columns = [
-    { key: "hora", label: "Hora" },
-    { key: "cliente", label: "Cliente" },
-    { key: "servico", label: "Serviço" },
-    { key: "status", label: "Status" }
-  ];
-
-  const rows = [
-    { hora: "09:00", cliente: "Maria Souza", servico: "Corte", status: "Confirmado" },
-    { hora: "10:30", cliente: "João Lima", servico: "Barba", status: "Pendente" },
-    { hora: "13:00", cliente: "Ana Silva", servico: "Manicure", status: "Confirmado" },
-    { hora: "15:00", cliente: "Pedro Santos", servico: "Sobrancelha", status: "Confirmado" }
+  const cards = [
+    { title: "Agendamentos", value: "17", hint: "últimos 7 dias" },
+    { title: "Concluídos", value: "14", hint: "últimos 7 dias" },
+    { title: "Cancelados", value: "2", hint: "últimos 7 dias" },
+    { title: "Ausentes", value: "0", hint: "últimos 7 dias" },
+    { title: "Taxa de Cancelamento", value: "11.8%", hint: "últimos 7 dias" },
+    { title: "Total Concluídos", value: "R$ 710,00", hint: "últimos 7 dias" },
+    { title: "Pagamentos Recebidos", value: "R$ 0,00", hint: "últimos 7 dias" },
+    { title: "Ticket Médio", value: "R$ 50,71", hint: "últimos 7 dias" }
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <div className="text-2xl font-semibold">Dashboard</div>
-        <div className="mt-1 text-sm text-slate-400">Visão geral do seu negócio hoje.</div>
+        <div className="text-3xl font-extrabold tracking-tight text-slate-900">
+          Seja bem-vindo
+        </div>
+        <div className="mt-1 text-slate-600">
+          Você é integrante da empresa <span className="font-semibold">Acordes Barbearia</span>.
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
-        {kpis.map((k) => (
-          <Card key={k.title} title={k.title} value={k.value} subtitle={k.subtitle} />
-        ))}
+      <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div>
+            <div className="text-lg font-bold text-slate-900">⚡ Acesso Rápido</div>
+            <div className="text-sm text-slate-500">Atalhos para ações comuns</div>
+          </div>
+
+          <div className="flex gap-2">
+            <Button>Novo Agendamento</Button>
+            <Button variant="secondary">Agenda</Button>
+            <Button variant="secondary">Todos Agendamentos</Button>
+          </div>
+        </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
-        <div className="text-base font-semibold">Agenda do Dia</div>
-        <div className="mt-1 text-sm text-slate-400">Próximos horários</div>
+      <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div>
+            <div className="text-lg font-bold text-slate-900">🔗 Link de Agendamento</div>
+            <div className="text-sm text-slate-500">
+              Seus clientes acessam este link para agendar serviços.
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            <Button variant="secondary">Copiar</Button>
+            <Button variant="secondary">Abrir</Button>
+            <Button variant="secondary">QR Code</Button>
+            <Button>Configurar</Button>
+          </div>
+        </div>
+
         <div className="mt-4">
-          <Table columns={columns} rows={rows} />
+          <input
+            className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white focus:border-slate-300"
+            defaultValue="https://agendin.com.br/acordesbarbearia"
+          />
+        </div>
+      </div>
+
+      <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
+        <div className="text-lg font-bold text-slate-900">📊 Estatísticas (últimos 7 dias)</div>
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {cards.map((c) => (
+            <Card key={c.title} title={c.title} value={c.value} hint={c.hint} />
+          ))}
+        </div>
+
+        <div className="mt-6 flex justify-center">
+          <Button variant="secondary">Ver Mais »</Button>
         </div>
       </div>
     </div>
