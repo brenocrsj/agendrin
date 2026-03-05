@@ -3,7 +3,7 @@ from django.db import transaction
 from django.utils import timezone
 from datetime import timedelta
 
-from .models import Service, Professional, Customer, Appointment
+from .models import Service, Professional, Customer, Appointment, TimeBlock
 from apps.whatsapp.tasks import enqueue_confirmation_and_reminder
 
 class ServiceSerializer(serializers.ModelSerializer):
@@ -56,28 +56,72 @@ class AppointmentSerializer(serializers.ModelSerializer):
         tenant = request.user.tenant
         validated_data["tenant"] = tenant
 
-        # Anti-conflito (sobreposição)
         with transaction.atomic():
             professional = validated_data["professional"]
             starts_at = validated_data["starts_at"]
             ends_at = validated_data["ends_at"]
 
-            conflict = Appointment.objects.select_for_update().filter(
+            conflict_appt = Appointment.objects.select_for_update().filter(
                 professional=professional,
                 status__in=["PENDING", "CONFIRMED"],
                 starts_at__lt=ends_at,
                 ends_at__gt=starts_at,
             ).exists()
 
-            if conflict:
+            if conflict_appt:
                 raise serializers.ValidationError("Conflito: profissional já tem um agendamento neste horário.")
+
+            conflict_block = TimeBlock.objects.select_for_update().filter(
+                professional=professional,
+                starts_at__lt=ends_at,
+                ends_at__gt=starts_at,
+            ).exists()
+
+            if conflict_block:
+                raise serializers.ValidationError("Horário bloqueado para este profissional.")
 
             appt = Appointment.objects.create(**validated_data)
 
-        # enfileira confirmação e lembrete
         enqueue_confirmation_and_reminder(appt.id)
-
         return appt
+
+class TimeBlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TimeBlock
+        fields = "__all__"
+        read_only_fields = ("tenant",)
+
+    def validate(self, attrs):
+        starts_at = attrs.get("starts_at")
+        ends_at = attrs.get("ends_at")
+        professional = attrs.get("professional")
+
+        if not starts_at or not ends_at:
+            raise serializers.ValidationError("Informe starts_at e ends_at.")
+
+        if ends_at <= starts_at:
+            raise serializers.ValidationError("ends_at deve ser maior que starts_at.")
+
+        user = self.context["request"].user
+        tenant = user.tenant
+        if professional and professional.tenant_id != tenant.id:
+            raise serializers.ValidationError("professional não pertence ao seu estabelecimento.")
+
+        # Não bloquear em cima de agendamento confirmado/pendente
+        conflict_appt = Appointment.objects.filter(
+            professional=professional,
+            status__in=["PENDING", "CONFIRMED"],
+            starts_at__lt=ends_at,
+            ends_at__gt=starts_at,
+        ).exists()
+        if conflict_appt:
+            raise serializers.ValidationError("Existem agendamentos neste intervalo. Cancele/edite antes de bloquear.")
+
+        return attrs
+
+    def create(self, validated_data):
+        validated_data["tenant"] = self.context["request"].user.tenant
+        return super().create(validated_data)
 
 class PublicCreateAppointmentSerializer(serializers.Serializer):
     service_id = serializers.IntegerField()
@@ -105,14 +149,22 @@ class PublicCreateAppointmentSerializer(serializers.Serializer):
         ends_at = starts_at + timedelta(minutes=service.duration_min)
 
         with transaction.atomic():
-            conflict = Appointment.objects.select_for_update().filter(
+            conflict_appt = Appointment.objects.select_for_update().filter(
                 professional=professional,
                 status__in=["PENDING", "CONFIRMED"],
                 starts_at__lt=ends_at,
                 ends_at__gt=starts_at,
             ).exists()
-            if conflict:
+            if conflict_appt:
                 raise serializers.ValidationError("Horário indisponível.")
+
+            conflict_block = TimeBlock.objects.select_for_update().filter(
+                professional=professional,
+                starts_at__lt=ends_at,
+                ends_at__gt=starts_at,
+            ).exists()
+            if conflict_block:
+                raise serializers.ValidationError("Horário bloqueado.")
 
             appt = Appointment.objects.create(
                 tenant=tenant,

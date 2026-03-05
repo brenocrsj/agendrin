@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { api } from "../services/api";
 import Button from "../ui/Button";
+import { api } from "../services/api";
+
+function formatTime(iso) {
+  const d = new Date(iso);
+  return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
 
 export default function PublicBookingPage() {
   const { slug } = useParams();
@@ -12,53 +17,74 @@ export default function PublicBookingPage() {
 
   const [serviceId, setServiceId] = useState("");
   const [professionalId, setProfessionalId] = useState("");
+
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [slots, setSlots] = useState([]);
+  const [selectedSlot, setSelectedSlot] = useState(null);
 
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
 
-  const [selectedSlot, setSelectedSlot] = useState("");
+  const [loadingSlots, setLoadingSlots] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [done, setDone] = useState(false);
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+
+  const accent = tenant?.secondary_color || "#d97735";
 
   useEffect(() => {
-    async function load() {
+    loadCatalog();
+  }, [slug]);
+
+  async function loadCatalog() {
+    try {
       const { data } = await api.get(`/api/scheduling/public/${slug}/catalog/`);
       setTenant(data.tenant);
       setServices(data.services);
       setProfessionals(data.professionals);
+    } catch {
+      setMessage("Não foi possível carregar este site.");
     }
-    load().catch(() => setError("Link inválido ou indisponível."));
-  }, [slug]);
-
-  const canLoadSlots = useMemo(() => serviceId && professionalId && date, [serviceId, professionalId, date]);
+  }
 
   async function loadSlots() {
-    setError("");
-    setSlots([]);
-    setSelectedSlot("");
-    if (!canLoadSlots) return;
+    if (!serviceId || !professionalId || !date) return;
 
-    const { data } = await api.get(
-      `/api/scheduling/public/${slug}/availability/`,
-      { params: { serviceId, professionalId, date } }
-    );
-    setSlots(data.slots || []);
+    setLoadingSlots(true);
+    setSelectedSlot(null);
+
+    try {
+      const { data } = await api.get(
+        `/api/scheduling/public/${slug}/availability/`,
+        {
+          params: {
+            serviceId,
+            professionalId,
+            date,
+          },
+        }
+      );
+
+      setSlots(data.slots || []);
+    } catch {
+      setSlots([]);
+    } finally {
+      setLoadingSlots(false);
+    }
   }
 
   useEffect(() => {
-    loadSlots().catch(() => {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    loadSlots();
   }, [serviceId, professionalId, date]);
 
   async function confirm() {
-    setError("");
-    if (!selectedSlot) return setError("Selecione um horário.");
-    if (!customerName.trim() || !customerPhone.trim()) return setError("Preencha nome e telefone.");
+    if (!selectedSlot || !customerName || !customerPhone) {
+      setMessage("Preencha seus dados e selecione um horário.");
+      return;
+    }
 
     setBusy(true);
+    setMessage("");
+
     try {
       await api.post(`/api/scheduling/public/${slug}/appointments/`, {
         service_id: Number(serviceId),
@@ -67,151 +93,184 @@ export default function PublicBookingPage() {
         customer_name: customerName,
         customer_phone: customerPhone,
       });
-      setDone(true);
-    } catch (e) {
-      setError("Não foi possível confirmar. Tente outro horário.");
+
+      setMessage("Agendamento confirmado! 🎉");
+
+      setCustomerName("");
+      setCustomerPhone("");
+      setSelectedSlot(null);
+    } catch {
+      setMessage("Este horário acabou de ser reservado. Escolha outro.");
     } finally {
       setBusy(false);
     }
   }
 
-  if (error && !tenant) {
-    return <div className="min-h-screen bg-white flex items-center justify-center p-6">{error}</div>;
-  }
+  const todayLabel = useMemo(() => {
+    return new Date(date).toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  }, [date]);
 
   return (
-    <div className="min-h-screen bg-white">
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-3xl px-4 py-4 flex items-center justify-between">
-          <div className="font-extrabold tracking-tight text-slate-900">
+    <div
+      className="min-h-screen"
+      style={{
+        background: tenant?.primary_color || "#ffffff",
+      }}
+    >
+      <div className="mx-auto max-w-2xl px-4 py-10">
+        {/* HEADER */}
+        <div className="text-center">
+          <div className="text-3xl font-extrabold text-slate-900">
             {tenant?.name || "Agendamento"}
           </div>
-          <div className="text-sm text-slate-500">Agende online</div>
-        </div>
-      </header>
 
-      <main className="mx-auto max-w-3xl px-4 py-8">
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft">
-          {done ? (
-            <div>
-              <div className="text-2xl font-extrabold text-slate-900">Agendamento confirmado ✅</div>
-              <div className="mt-2 text-slate-600">
-                Você receberá a confirmação/lembrete conforme configuração do estabelecimento.
-              </div>
-              <div className="mt-6">
-                <Button onClick={() => window.location.reload()}>Agendar outro</Button>
-              </div>
+          {tenant?.phone && (
+            <div className="mt-1 text-sm text-slate-600">
+              Contato: {tenant.phone}
             </div>
-          ) : (
-            <>
-              <div className="text-2xl font-extrabold text-slate-900">Escolha seu horário</div>
-              <div className="mt-1 text-slate-600">Simples, rápido e responsivo.</div>
-
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <div>
-                  <label className="text-xs font-semibold text-slate-600">Serviço</label>
-                  <select
-                    className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white"
-                    value={serviceId}
-                    onChange={(e) => setServiceId(e.target.value)}
-                  >
-                    <option value="">Selecione...</option>
-                    {services.map((s) => (
-                      <option key={s.id} value={s.id}>{s.name}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="text-xs font-semibold text-slate-600">Profissional</label>
-                  <select
-                    className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white"
-                    value={professionalId}
-                    onChange={(e) => setProfessionalId(e.target.value)}
-                  >
-                    <option value="">Selecione...</option>
-                    {professionals.map((p) => (
-                      <option key={p.id} value={p.id}>{p.name}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="text-xs font-semibold text-slate-600">Data</label>
-                  <input
-                    type="date"
-                    className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="mt-6">
-                <div className="text-xs font-semibold text-slate-600">Horários disponíveis</div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {slots.length === 0 ? (
-                    <div className="text-sm text-slate-500">Nenhum horário disponível.</div>
-                  ) : (
-                    slots.map((iso) => {
-                      const dt = new Date(iso);
-                      const label = dt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-                      const active = selectedSlot === iso;
-                      return (
-                        <button
-                          key={iso}
-                          onClick={() => setSelectedSlot(iso)}
-                          className={[
-                            "rounded-xl border px-3 py-2 text-sm font-semibold transition",
-                            active
-                              ? "border-copper-400 bg-copper-50 text-copper-800"
-                              : "border-slate-200 bg-white text-slate-800 hover:bg-slate-50"
-                          ].join(" ")}
-                        >
-                          {label}
-                        </button>
-                      );
-                    })
-                  )}
-                </div>
-              </div>
-
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <div>
-                  <label className="text-xs font-semibold text-slate-600">Seu nome</label>
-                  <input
-                    className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white"
-                    value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
-                    placeholder="Ex: Maria"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-slate-600">Telefone (WhatsApp)</label>
-                  <input
-                    className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white"
-                    value={customerPhone}
-                    onChange={(e) => setCustomerPhone(e.target.value)}
-                    placeholder="Ex: 11999999999"
-                  />
-                </div>
-              </div>
-
-              {error ? (
-                <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                  {error}
-                </div>
-              ) : null}
-
-              <div className="mt-6">
-                <Button className="w-full py-3 rounded-2xl" onClick={confirm} disabled={busy}>
-                  {busy ? "Confirmando..." : "Confirmar agendamento"}
-                </Button>
-              </div>
-            </>
           )}
         </div>
-      </main>
+
+        {/* SERVIÇO */}
+        <div className="mt-8">
+          <div className="text-sm font-semibold text-slate-700">
+            Serviço
+          </div>
+
+          <select
+            className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm"
+            value={serviceId}
+            onChange={(e) => setServiceId(e.target.value)}
+          >
+            <option value="">Selecione...</option>
+
+            {services.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* PROFISSIONAL */}
+        <div className="mt-5">
+          <div className="text-sm font-semibold text-slate-700">
+            Profissional
+          </div>
+
+          <select
+            className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm"
+            value={professionalId}
+            onChange={(e) => setProfessionalId(e.target.value)}
+          >
+            <option value="">Selecione...</option>
+
+            {professionals.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* DATA */}
+        <div className="mt-5">
+          <div className="text-sm font-semibold text-slate-700">Data</div>
+
+          <input
+            type="date"
+            className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+
+          <div className="mt-2 text-xs text-slate-500">{todayLabel}</div>
+        </div>
+
+        {/* HORÁRIOS */}
+        <div className="mt-6">
+          <div className="text-sm font-semibold text-slate-700">
+            Horários disponíveis
+          </div>
+
+          {loadingSlots ? (
+            <div className="mt-3 text-sm text-slate-500">
+              Carregando horários...
+            </div>
+          ) : slots.length === 0 ? (
+            <div className="mt-3 text-sm text-slate-500">
+              Nenhum horário disponível.
+            </div>
+          ) : (
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              {slots.map((slot) => {
+                const active = slot === selectedSlot;
+
+                return (
+                  <button
+                    key={slot}
+                    onClick={() => setSelectedSlot(slot)}
+                    className={`rounded-xl border px-3 py-2 text-sm ${
+                      active
+                        ? "text-white"
+                        : "bg-white text-slate-800 hover:bg-slate-50"
+                    }`}
+                    style={
+                      active
+                        ? {
+                            backgroundColor: accent,
+                            borderColor: accent,
+                          }
+                        : {}
+                    }
+                  >
+                    {formatTime(slot)}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* CLIENTE */}
+        <div className="mt-8 space-y-4">
+          <input
+            placeholder="Seu nome"
+            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm"
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+          />
+
+          <input
+            placeholder="Seu telefone"
+            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm"
+            value={customerPhone}
+            onChange={(e) => setCustomerPhone(e.target.value)}
+          />
+        </div>
+
+        {/* BOTÃO */}
+        <div className="mt-6">
+          <Button
+            className="w-full py-3 rounded-xl"
+            onClick={confirm}
+            disabled={busy}
+            style={{ backgroundColor: accent }}
+          >
+            {busy ? "Confirmando..." : "Confirmar agendamento"}
+          </Button>
+        </div>
+
+        {message && (
+          <div className="mt-4 text-center text-sm text-slate-700">
+            {message}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
