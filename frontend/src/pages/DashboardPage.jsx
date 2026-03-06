@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { CalendarPlus2, Copy, ExternalLink, Sparkles } from "lucide-react";
 import Button from "../ui/Button";
+import Card from "../ui/Card";
 import { api } from "../services/api";
 
 export default function DashboardPage() {
@@ -8,7 +10,8 @@ export default function DashboardPage() {
   const [tenant, setTenant] = useState(null);
 
   useEffect(() => {
-    api.get("/api/core/tenant/me/")
+    api
+      .get("/api/core/tenant/me/")
       .then(({ data }) => setTenant(data))
       .catch(() => {});
   }, []);
@@ -21,59 +24,72 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <div className="text-3xl font-extrabold tracking-tight text-slate-900">
-          Seja bem-vindo
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <div className="badge-copper">
+            <Sparkles size={14} />
+            Visão geral
+          </div>
+          <div className="page-title mt-4">Bem-vindo ao painel</div>
+          <div className="page-subtitle">
+            Empresa: <span className="font-semibold text-slate-700">{tenant?.name || "Carregando..."}</span>
+          </div>
         </div>
-        <div className="mt-1 text-slate-600">
-          Empresa: <span className="font-semibold">{tenant?.name || "..."}</span>
+
+        <div className="flex flex-wrap gap-3">
+          <Button onClick={() => nav("/app/agenda?novo=1")}>
+            <CalendarPlus2 size={16} />
+            Novo agendamento
+          </Button>
+          <Button variant="secondary" onClick={() => nav("/app/clientes")}>Clientes</Button>
         </div>
       </div>
 
-      <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
-        <div className="flex items-center justify-between gap-3 flex-wrap">
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card title="Agendamentos" value="24" hint="Resumo ilustrativo do dia" />
+        <Card title="Clientes ativos" value="128" hint="Base em crescimento" />
+        <Card title="Taxa de ocupação" value="82%" hint="Bom aproveitamento da agenda" />
+      </div>
+
+      <div className="section-card overflow-hidden bg-gradient-to-r from-white via-white to-copper-50/60">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <div className="text-lg font-bold text-slate-900">⚡ Acesso Rápido</div>
-            <div className="text-sm text-slate-500">Atalhos para ações comuns</div>
+            <div className="text-lg font-bold text-slate-900">Acesso rápido</div>
+            <div className="mt-1 text-sm text-slate-500">Atalhos para as ações mais frequentes.</div>
           </div>
 
-          <div className="flex gap-2">
-            <Button onClick={() => nav("/app/agenda?novo=1")}>Novo Agendamento</Button>
-            <Button variant="secondary" onClick={() => nav("/app/agenda")}>Agenda</Button>
-            <Button variant="secondary" onClick={() => nav("/app/clientes")}>Clientes</Button>
+          <div className="flex flex-wrap gap-2">
+            <Button onClick={() => nav("/app/agenda?novo=1")}>Novo agendamento</Button>
+            <Button variant="secondary" onClick={() => nav("/app/agenda")}>Abrir agenda</Button>
+            <Button variant="secondary" onClick={() => nav("/app/clientes")}>Ver clientes</Button>
           </div>
         </div>
       </div>
 
-      <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
-        <div className="flex items-center justify-between gap-3 flex-wrap">
+      <div className="section-card">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <div className="text-lg font-bold text-slate-900">🔗 Link de Agendamento</div>
-            <div className="text-sm text-slate-500">
-              Seus clientes acessam este link para agendar serviços.
+            <div className="text-lg font-bold text-slate-900">Link de agendamento</div>
+            <div className="mt-1 text-sm text-slate-500">
+              Compartilhe com seus clientes para permitir agendamentos online.
             </div>
           </div>
 
-          <div className="flex gap-2">
-            <Button
-              variant="secondary"
-              onClick={() => navigator.clipboard.writeText(bookingLink)}
-            >
+          <div className="flex flex-wrap gap-2">
+            <Button variant="secondary" onClick={() => navigator.clipboard.writeText(bookingLink)}>
+              <Copy size={16} />
               Copiar
             </Button>
             <Button variant="secondary" onClick={() => window.open(bookingLink, "_blank")}>
+              <ExternalLink size={16} />
               Abrir
             </Button>
             <Button onClick={() => nav("/app/configuracoes")}>Configurar</Button>
           </div>
         </div>
 
-        <div className="mt-4">
-          <input
-            className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white focus:border-slate-300"
-            value={bookingLink}
-            readOnly
-          />
+        <div className="mt-5">
+          <input className="form-control" value={bookingLink} readOnly />
         </div>
       </div>
     </div>

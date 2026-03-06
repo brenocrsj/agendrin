@@ -3,15 +3,15 @@ import Topbar from "./Topbar";
 
 export default function AppShell({ children }) {
   return (
-    <div className="min-h-screen bg-[#f6f8fb]">
-      <div className="flex">
+    <div className="min-h-screen bg-transparent">
+      <div className="flex min-h-screen">
         <Sidebar />
 
         <div className="flex-1 min-w-0">
           <Topbar />
 
-          <main className="px-6 py-6">
-            <div className="mx-auto max-w-[1200px]">{children}</div>
+          <main className="px-4 py-5 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-[1280px]">{children}</div>
           </main>
         </div>
       </div>

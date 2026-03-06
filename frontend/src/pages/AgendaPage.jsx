@@ -181,15 +181,15 @@ export default function AgendaPage() {
   const hours = Array.from({ length: 12 }, (_, i) => i + 8); // 08..19
 
   return (
-    <div className="space-y-5">
-      <div className="flex items-start justify-between gap-3 flex-wrap">
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <div className="text-2xl font-extrabold tracking-tight text-slate-900">Agenda</div>
-          <div className="mt-1 text-sm text-slate-500">{todayLabel}</div>
+          <div className="page-title">Agenda</div>
+          <div className="page-subtitle">{todayLabel}</div>
           <div className="mt-2">
             <input
               type="date"
-              className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:bg-white"
+              className="form-control max-w-[220px] py-2.5"
               value={day}
               onChange={(e) => setDay(e.target.value)}
             />
@@ -204,22 +204,22 @@ export default function AgendaPage() {
       </div>
 
       {error ? (
-        <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="rounded-[22px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           {error}
         </div>
       ) : null}
 
-      <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-soft">
+      <div className="section-card">
         {loading ? (
           <div className="text-sm text-slate-500">Carregando...</div>
         ) : (
-          <div className="rounded-2xl border border-slate-200 overflow-hidden">
-            <div className="grid grid-cols-[80px_1fr] bg-slate-50 border-b border-slate-200">
+          <div className="overflow-hidden rounded-[26px] border border-slate-200 bg-white">
+            <div className="data-grid-header grid grid-cols-[82px_1fr] border-b border-slate-200">
               <div className="px-3 py-2 text-xs font-semibold text-slate-500">Hora</div>
               <div className="px-3 py-2 text-xs font-semibold text-slate-500">Agendamentos / Bloqueios</div>
             </div>
 
-            <div className="grid grid-cols-[80px_1fr]">
+            <div className="grid grid-cols-[82px_1fr]">
               {hours.map((h) => {
                 const hh = String(h).padStart(2, "0");
                 const hourPrefix = `${hh}:`;
@@ -228,12 +228,15 @@ export default function AgendaPage() {
 
                 return (
                   <div key={h} className="contents">
-                    <div className="border-b border-slate-100 px-3 py-3 text-xs text-slate-500">
+                    <div className="border-b border-slate-100 px-3 py-3 text-xs font-semibold text-slate-400">
                       {hh}:00
                     </div>
-                    <div className="border-b border-slate-100 px-3 py-2 space-y-2">
+                    <div className="border-b border-slate-100 px-3 py-3 space-y-2.5">
                       {blocksHere.map((b) => (
-                        <div key={b.id} className="rounded-2xl bg-slate-900 text-white px-4 py-3">
+                        <div
+                          key={b.id}
+                          className="rounded-[22px] border border-slate-800 bg-slate-900 text-white px-4 py-3 shadow-lg shadow-slate-900/10"
+                        >
                           <div className="text-sm font-semibold">🚫 Bloqueado</div>
                           <div className="mt-1 text-xs opacity-90">
                             {hhmm(b.starts_at)} - {hhmm(b.ends_at)} • {b.reason || "Indisponível"}
@@ -245,22 +248,20 @@ export default function AgendaPage() {
                         <button
                           key={a.id}
                           onClick={() => openEditAppt(a)}
-                          className="w-full text-left rounded-2xl bg-emerald-600 text-white px-4 py-3 hover:opacity-95"
+                          className="w-full rounded-[22px] border border-copper-200 bg-gradient-to-r from-copper-600 to-copper-500 px-4 py-3 text-left text-white shadow-lg shadow-copper-600/20 transition hover:-translate-y-0.5"
                         >
                           <div className="text-sm font-semibold">
-                            {a.customer_name || "Agendamento"} {/* se vier nested depois você melhora */}
+                            {a.customer_name || "Agendamento"}
                           </div>
                           <div className="mt-1 text-xs opacity-90">
                             {hhmm(a.starts_at)} - {hhmm(a.ends_at)} • status: {a.status}
                           </div>
-                          <div className="mt-1 text-xs opacity-90">
-                            (clique para editar)
-                          </div>
+                          <div className="mt-1 text-xs opacity-90">(clique para editar)</div>
                         </button>
                       ))}
 
                       {apptsHere.length === 0 && blocksHere.length === 0 ? (
-                        <div className="text-xs text-slate-400">Livre</div>
+                        <div className="text-xs font-medium text-slate-400">Livre</div>
                       ) : null}
                     </div>
                   </div>
@@ -271,7 +272,6 @@ export default function AgendaPage() {
         )}
       </div>
 
-      {/* Modal Agendamento */}
       <Modal
         open={openAppt}
         title={editingId ? "Editar agendamento" : "Novo agendamento"}
@@ -279,9 +279,9 @@ export default function AgendaPage() {
       >
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <div className="text-xs font-semibold text-slate-600">Serviço</div>
+            <div className="form-label">Serviço</div>
             <select
-              className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white"
+              className="form-select mt-2"
               value={serviceId}
               onChange={(e) => setServiceId(e.target.value)}
             >
@@ -293,9 +293,9 @@ export default function AgendaPage() {
           </div>
 
           <div>
-            <div className="text-xs font-semibold text-slate-600">Profissional</div>
+            <div className="form-label">Profissional</div>
             <select
-              className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white"
+              className="form-select mt-2"
               value={professionalId}
               onChange={(e) => setProfessionalId(e.target.value)}
             >
@@ -307,9 +307,9 @@ export default function AgendaPage() {
           </div>
 
           <div>
-            <div className="text-xs font-semibold text-slate-600">Cliente</div>
+            <div className="form-label">Cliente</div>
             <select
-              className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white"
+              className="form-select mt-2"
               value={customerId}
               onChange={(e) => setCustomerId(e.target.value)}
             >
@@ -321,19 +321,19 @@ export default function AgendaPage() {
           </div>
 
           <div>
-            <div className="text-xs font-semibold text-slate-600">Horário</div>
+            <div className="form-label">Horário</div>
             <input
               type="time"
-              className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white"
+              className="form-select mt-2"
               value={time}
               onChange={(e) => setTime(e.target.value)}
             />
           </div>
 
           <div className="md:col-span-2">
-            <div className="text-xs font-semibold text-slate-600">Status</div>
+            <div className="form-label">Status</div>
             <select
-              className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white"
+              className="form-select mt-2"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
@@ -355,7 +355,6 @@ export default function AgendaPage() {
         </div>
       </Modal>
 
-      {/* Modal Bloqueio */}
       <Modal
         open={openBlock}
         title="Bloquear horário"
@@ -363,9 +362,9 @@ export default function AgendaPage() {
       >
         <div className="grid gap-4 md:grid-cols-2">
           <div className="md:col-span-2">
-            <div className="text-xs font-semibold text-slate-600">Profissional</div>
+            <div className="form-label">Profissional</div>
             <select
-              className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white"
+              className="form-select mt-2"
               value={blockProfessionalId}
               onChange={(e) => setBlockProfessionalId(e.target.value)}
             >
@@ -377,29 +376,29 @@ export default function AgendaPage() {
           </div>
 
           <div>
-            <div className="text-xs font-semibold text-slate-600">Início</div>
+            <div className="form-label">Início</div>
             <input
               type="time"
-              className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white"
+              className="form-select mt-2"
               value={blockStart}
               onChange={(e) => setBlockStart(e.target.value)}
             />
           </div>
 
           <div>
-            <div className="text-xs font-semibold text-slate-600">Fim</div>
+            <div className="form-label">Fim</div>
             <input
               type="time"
-              className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white"
+              className="form-select mt-2"
               value={blockEnd}
               onChange={(e) => setBlockEnd(e.target.value)}
             />
           </div>
 
           <div className="md:col-span-2">
-            <div className="text-xs font-semibold text-slate-600">Motivo</div>
+            <div className="form-label">Motivo</div>
             <input
-              className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:bg-white"
+              className="form-select mt-2"
               value={blockReason}
               onChange={(e) => setBlockReason(e.target.value)}
               placeholder="Ex: almoço, folga, reunião"
