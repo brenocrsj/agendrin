@@ -23,6 +23,8 @@ class Customer(models.Model):
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, related_name="customers")
     name = models.CharField(max_length=120)
     phone = models.CharField(max_length=30)
+    email = models.EmailField(blank=True, default="")
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         indexes = [models.Index(fields=["tenant", "phone"])]
