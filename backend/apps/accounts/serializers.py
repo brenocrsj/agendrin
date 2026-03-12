@@ -5,6 +5,15 @@ from apps.core.models import Tenant
 
 User = get_user_model()
 
+
+class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = User.EMAIL_FIELD
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        data["email"] = self.user.email
+        return data
+
 class RegisterSerializer(serializers.Serializer):
     tenant_name = serializers.CharField(max_length=120)
     tenant_slug = serializers.SlugField()
