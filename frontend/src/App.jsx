@@ -1,18 +1,12 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import ProtectedRoute from "./auth/ProtectedRoute";
-
-import LandingPage from "./pages/LandingPage";
+import { Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import PublicBookingPage from "./pages/PublicBookingPage"; // (vamos criar)
-
-import AppShell from "./layout/AppShell";
+import LandingPage from "./pages/LandingPage";
 import DashboardPage from "./pages/DashboardPage";
-import AgendaPage from "./pages/AgendaPage";
 import ClientesPage from "./pages/ClientesPage";
 import ServicosPage from "./pages/ServicosPage";
-import ProfissionaisPage from "./pages/ProfissionaisPage";
-import FinanceiroPage from "./pages/FinanceiroPage";
-import ConfiguracoesPage from "./pages/ConfiguracoesPage";
+import AgendaPage from "./pages/AgendaPage";
+import AppShell from "./layout/AppShell";
+import ProtectedRoute from "./auth/ProtectedRoute";
 
 export default function App() {
   return (
@@ -20,31 +14,49 @@ export default function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/entrar" element={<LoginPage />} />
 
-      {/* público por link */}
-      <Route path="/u/:slug" element={<PublicBookingPage />} />
-
       <Route
-        path="/app/*"
+        path="/app/inicio"
         element={
           <ProtectedRoute>
             <AppShell>
-              <Routes>
-                <Route path="" element={<Navigate to="inicio" replace />} />
-                <Route path="inicio" element={<DashboardPage />} />
-                <Route path="agenda" element={<AgendaPage />} />
-                <Route path="clientes" element={<ClientesPage />} />
-                <Route path="servicos" element={<ServicosPage />} />
-                <Route path="profissionais" element={<ProfissionaisPage />} />
-                <Route path="financeiro" element={<FinanceiroPage />} />
-                <Route path="configuracoes" element={<ConfiguracoesPage />} />
-                <Route path="*" element={<Navigate to="/app/inicio" replace />} />
-              </Routes>
+              <DashboardPage />
             </AppShell>
           </ProtectedRoute>
         }
       />
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route
+        path="/app/clientes"
+        element={
+          <ProtectedRoute>
+            <AppShell>
+              <ClientesPage />
+            </AppShell>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/app/servicos"
+        element={
+          <ProtectedRoute>
+            <AppShell>
+              <ServicosPage />
+            </AppShell>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/app/agenda"
+        element={
+          <ProtectedRoute>
+            <AppShell>
+              <AgendaPage />
+            </AppShell>
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }
